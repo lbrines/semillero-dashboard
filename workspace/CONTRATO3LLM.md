@@ -17,6 +17,13 @@ Eres un **Product/Tech Lead** que debe **cerrar el MVP en modo MOCK** con calida
 7) **Dataset MOCK con variabilidad**: Entregas "a tiempo" y "atrasadas" para KPIs y reportes consistentes.
 8) **Desarrollo de Cursos**: Frontend muestra datos reales del backend, sin datos hardcodeados, con concordancia exacta entre frontend y backend.
 9) **Desarrollo del Módulo Estudiantes**: Sistema completo de gestión de estudiantes con listado, perfiles individuales, filtros, búsqueda, alertas y dashboard de progreso.
+   - **IMPORTANTE: Restricción de acceso a búsqueda de estudiantes**
+   - La funcionalidad de búsqueda de estudiantes estará disponible ÚNICAMENTE para los roles:
+     - Docente (limitado a sus cursos asignados)
+     - Coordinador (acceso a todas las cohortes coordinadas)
+     - Administrador (acceso completo a todos los estudiantes)
+   - Los usuarios con rol "Estudiante" NO tendrán acceso a la búsqueda de otros estudiantes
+   - Los estudiantes solo podrán ver su propio perfil
 10) **Desarrollo del Módulo Reportes**: Sistema completo de reportes académicos con dashboard ejecutivo, métricas de rendimiento, filtros por período/cohorte, exportación en PDF/Excel y análisis de tendencias.
 
 > **MVP**: Solo MOCK mode implementado. OAuth/Google queda como WOW opcional en Contrato 4.
@@ -96,8 +103,10 @@ Para cada tarea significativa, debe incluirse una breve nota que confirme:
   - `loading`: skeletons o placeholders.
   - `empty`: mensajes y CTA (p. ej., "sin datos").
   - `error`: alerta visible con retry. :contentReference[oaicite:9]{index=9}
-- **Filtros y búsqueda** (Students):
-  - Búsqueda por nombre/email; filtro por curso/cohorte; paginación client o server-side (según MOCK). :contentReference[oaicite:10]{index=10}
+- **Filtros y búsqueda** (Students) (RESTRINGIDO POR ROL):
+  - Búsqueda por nombre/email; filtro por curso/cohorte; paginación client o server-side (según MOCK).
+  - RESTRICCIÓN: Esta funcionalidad solo estará disponible para roles docente, coordinador y administrador
+  - Los estudiantes no tendrán acceso a esta funcionalidad :contentReference[oaicite:10]{index=10}
 - **KPIs Overview**:
   - `totalStudents`, `totalCourses`, `totalSubmissions`, `lateSubmissions` calculados desde MOCK + un gráfico Tremor (cohortes o evolución semanal). :contentReference[oaicite:11]{index=11}
 - **Sistema de Autenticación por Roles**:
@@ -171,7 +180,7 @@ Para cada tarea significativa, debe incluirse una breve nota que confirme:
 - ✅ **Backend**: `curl http://localhost:8000/api/v1/students/{id}` devuelve datos del estudiante específico
 - ✅ **Backend**: `curl http://localhost:8000/api/v1/students/{id}/progress` devuelve métricas de progreso
 - ✅ **Frontend**: Página `/students` muestra datos reales del backend, no "Página en desarrollo"
-- ✅ **Frontend**: Filtros y búsqueda de estudiantes funcionan correctamente
+- ✅ **Frontend**: Filtros y búsqueda de estudiantes funcionan correctamente (solo para roles docente, coordinador y administrador)
 - ✅ **Frontend**: Perfil individual de estudiante muestra datos detallados
 
 ### Validaciones de Lecciones Aprendidas

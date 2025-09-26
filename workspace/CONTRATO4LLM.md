@@ -86,16 +86,22 @@ Para cada tarea significativa, debe incluirse una breve nota que confirme:
      - Estados loading/empty/error con fallbacks apropiados.
      - **NUEVO**: Indicadores visuales de datos MOCK (Google como WOW opcional).
    - Sistema de **roles** con vistas diferenciadas:
-     - **Estudiante** (`estudiante`): `StudentReportsView` - solo progreso personal, métricas individuales.
-     - **Docente** (`docente`): `TeacherReportsView` - avance de sus alumnos, KPIs de cursos asignados.
-     - **Coordinador** (`coordinador`): `CoordinatorReportsView` - reportes globales, comparación entre cohortes.
-     - **Administrador** (`administrador`): `AdminReportsView` - overview global de cursos/alumnos.
+     - **Estudiante** (`estudiante`): `StudentReportsView` - solo progreso personal, métricas individuales. **NO tiene acceso a búsqueda de estudiantes**.
+     - **Docente** (`docente`): `TeacherReportsView` - avance de sus alumnos, KPIs de cursos asignados. **Acceso a búsqueda limitada a sus estudiantes**.
+     - **Coordinador** (`coordinador`): `CoordinatorReportsView` - reportes globales, comparación entre cohortes. **Acceso completo a búsqueda de estudiantes en sus cohortes**.
+     - **Administrador** (`administrador`): `AdminReportsView` - overview global de cursos/alumnos. **Acceso completo a búsqueda de todos los estudiantes**.
      - **NUEVO**: Soporte para datos MOCK (Google como WOW opcional) en todas las vistas.
    - Context `RoleContext` para manejo de estado global de roles.
    - **NUEVO**: Integración con `AuthContext` para autenticación por whitelist de emails (MOCK).
    - Hooks: `useCohortProgress`, `useRole`, `useReports` para datos y permisos.
+   - **Permisos específicos de búsqueda por rol**:
+     - `STUDENTS_SEARCH`: Permiso para acceder a la funcionalidad de búsqueda de estudiantes
+       - Asignado a: docente, coordinador, administrador
+       - NO asignado a: estudiante
    - **WOW OPCIONAL**: Hooks `useGoogleReports` para datos desde Google Classroom API.
    - Protección de rutas con `RoleGuard` component.
+   - Protección específica para ruta `/students` (búsqueda) limitada a roles docente, coordinador y administrador.
+   - Redirección automática para estudiantes que intenten acceder a la búsqueda.
    - **WOW OPCIONAL**: Protección dual con autenticación Google OAuth opcional.
 
 3. **Infraestructura**

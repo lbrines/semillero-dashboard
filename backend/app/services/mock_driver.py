@@ -79,6 +79,26 @@ class MockDataDriver(BaseDataDriver):
         """Obtener estudiantes de un curso con paginación"""
         course_students = [s for s in self.students if s['course_id'] == course_id]
         
+        # Mapear campos para compatibilidad con modelos Pydantic
+        mapped_students = []
+        for student in course_students:
+            mapped_student = {
+                'user_id': student['user_id'],
+                'course_id': student['course_id'],
+                'profile': {
+                    'id': student['profile']['id'],
+                    'name': {
+                        'given_name': student['profile']['name']['given_name'],
+                        'family_name': student['profile']['name']['family_name'],
+                        'full_name': student['profile']['name']['full_name']
+                    },
+                    'email_address': student['profile']['email_address'],
+                    'photo_url': student['profile']['photo_url'],
+                    'verified_teacher': student['profile']['verified_teacher']
+                }
+            }
+            mapped_students.append(mapped_student)
+        
         start_index = 0
         if page_token:
             try:
@@ -87,16 +107,16 @@ class MockDataDriver(BaseDataDriver):
                 start_index = 0
         
         end_index = start_index + page_size
-        students_page = course_students[start_index:end_index]
+        students_page = mapped_students[start_index:end_index]
         
         next_page_token = None
-        if end_index < len(course_students):
+        if end_index < len(mapped_students):
             next_page_token = str(end_index)
         
         return {
             'students': students_page,
             'next_page_token': next_page_token,
-            'total_items': len(course_students)
+            'total_items': len(mapped_students)
         }
     
     async def get_coursework(self, course_id: str, page_size: int = 10, page_token: Optional[str] = None) -> Dict[str, Any]:

@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import os
-from .routers import courses, students, coursework, submissions, users, health, auth
+from .routers import courses, students, coursework, submissions, users, health, auth, teachers, reports
 from .services.base import DataDriverFactory
 
 # Crear aplicación FastAPI
@@ -32,6 +32,8 @@ app.include_router(coursework.router, prefix="/api/v1", tags=["coursework"])
 app.include_router(submissions.router, prefix="/api/v1", tags=["submissions"])
 app.include_router(users.router, prefix="/api/v1", tags=["users"])
 app.include_router(auth.router, prefix="/api/v1", tags=["auth"])
+app.include_router(teachers.router, prefix="/api/v1", tags=["teachers"])
+app.include_router(reports.router, prefix="/api/v1", tags=["reports"])
 
 # Crear driver de datos global
 data_driver = DataDriverFactory.create_driver()
