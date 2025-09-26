@@ -61,18 +61,18 @@ export default function CourseDetailPage() {
         setError(null)
 
         // Fetch course details
-        const courseResponse = await axios.get(`http://localhost:8000/api/v1/courses/${courseId}`)
+        const courseResponse = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/courses/${courseId}`)
         setCourse(courseResponse.data)
 
         // Fetch students for this course
-        const studentsResponse = await axios.get(`http://localhost:8000/api/v1/courses/${courseId}/students`)
+        const studentsResponse = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/courses/${courseId}/students`)
         const studentsData = studentsResponse.data.students || []
         
         // Fetch detailed progress for each student
         const studentsWithProgress = await Promise.all(
           studentsData.map(async (student: any) => {
             try {
-              const progressResponse = await axios.get(`http://localhost:8000/api/v1/students/${student.userId}/progress`)
+              const progressResponse = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/students/${student.userId}/progress`)
               const progress = progressResponse.data
               
               return {

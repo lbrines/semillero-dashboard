@@ -45,11 +45,11 @@ export default function StudentProfilePage() {
         setError(null)
 
         // Fetch student details
-        const studentResponse = await axios.get(`http://localhost:8000/api/v1/students/${studentId}`)
+        const studentResponse = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/students/${studentId}`)
         setStudent(studentResponse.data)
 
         // Fetch student progress
-        const progressResponse = await axios.get(`http://localhost:8000/api/v1/students/${studentId}/progress`)
+        const progressResponse = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/students/${studentId}/progress`)
         setProgress(progressResponse.data)
 
       } catch (err) {

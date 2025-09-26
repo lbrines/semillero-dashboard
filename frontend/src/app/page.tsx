@@ -2,67 +2,27 @@
 
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { useAuthContext } from '@/components/auth/AuthProvider'
 
-export default function Dashboard() {
+export default function HomePage() {
   const router = useRouter()
+  const { user, isAuthenticated } = useAuthContext()
 
   useEffect(() => {
-    // Redirigir a login si no hay usuario autenticado
-    const user = localStorage.getItem('user')
-    if (!user) {
-      router.push('/login')
-      return
-    }
-
-    // Redirigir según rol del usuario
-    try {
-      const userData = JSON.parse(user)
-      switch (userData.role) {
-        case 'estudiante':
-          router.push('/students')
-          break
-        case 'docente':
-          router.push('/teacher')
-          break
-        case 'coordinador':
-          router.push('/coordinate')
-          break
-        case 'administrador':
-          router.push('/overview')
-          break
-        default:
-          router.push('/login')
-      }
-    } catch (error) {
+    if (isAuthenticated && user) {
+      // Redirigir al dashboard correspondiente según el rol
+      router.push(`/dashboard/${user.role}`)
+    } else {
+      // Si no está autenticado, redirigir al login
       router.push('/login')
     }
-  }, [router])
+  }, [isAuthenticated, user, router])
 
   return (
-    <div style={{ 
-      display: 'flex', 
-      justifyContent: 'center', 
-      alignItems: 'center', 
-      height: '100vh',
-      fontFamily: 'Arial, sans-serif'
-    }}>
-      <div style={{ textAlign: 'center' }}>
-        <div style={{ 
-          width: '40px', 
-          height: '40px', 
-          border: '4px solid #f3f3f3', 
-          borderTop: '4px solid #3498db', 
-          borderRadius: '50%', 
-          animation: 'spin 1s linear infinite',
-          margin: '0 auto 20px'
-        }}></div>
-        <p style={{ color: '#6c757d', margin: 0 }}>Redirigiendo...</p>
-        <style jsx>{`
-          @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-          }
-        `}</style>
+    <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="text-center space-minimal-sm">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+        <p className="text-minimal-body">Redirigiendo...</p>
       </div>
     </div>
   )
