@@ -1,0 +1,77 @@
+[
+  {
+    "id": "coursework_1",
+    "course_id": "course_1",
+    "title": "Proyecto Final - Tienda Online",
+    "description": "Desarrollar una tienda online completa con carrito de compras",
+    "state": "PUBLISHED",
+    "alternate_link": "https://classroom.google.com/c/course_1/a/coursework_1",
+    "creation_time": "2024-02-01T10:00:00Z",
+    "update_time": "2024-02-01T10:00:00Z",
+    "due_date": "2024-03-15T23:59:59Z",
+    "due_time": "23:59",
+    "max_points": 100.0,
+    "work_type": "ASSIGNMENT",
+    "assignee_mode": "ALL_STUDENTS",
+    "submission_modification_mode": "MODIFIABLE_UNTIL_TURNED_IN",
+    "creator_user_id": "teacher_1",
+    "assignment": {
+      "student_work_folder": {
+        "id": "folder_1",
+        "title": "Proyecto Final",
+        "alternate_link": "https://drive.google.com/folder_1"
+      }
+    }
+  },
+  {
+    "id": "coursework_2",
+    "course_id": "course_1",
+    "title": "Análisis de Competencia",
+    "description": "Analizar competidores en el mercado de ecommerce",
+    "state": "PUBLISHED",
+    "alternate_link": "https://classroom.google.com/c/course_1/a/coursework_2",
+    "creation_time": "2024-02-10T10:00:00Z",
+    "update_time": "2024-02-10T10:00:00Z",
+    "due_date": "2024-02-25T23:59:59Z",
+    "due_time": "23:59",
+    "max_points": 50.0,
+    "work_type": "ASSIGNMENT",
+    "assignee_mode": "ALL_STUDENTS",
+    "submission_modification_mode": "MODIFIABLE_UNTIL_TURNED_IN",
+    "creator_user_id": "teacher_1"
+  },
+  {
+    "id": "coursework_3",
+    "course_id": "course_2",
+    "title": "Campaña de Marketing Digital",
+    "description": "Crear una campaña completa de marketing digital",
+    "state": "PUBLISHED",
+    "alternate_link": "https://classroom.google.com/c/course_2/a/coursework_3",
+    "creation_time": "2024-02-05T10:00:00Z",
+    "update_time": "2024-02-05T10:00:00Z",
+    "due_date": "2024-03-10T23:59:59Z",
+    "due_time": "23:59",
+    "max_points": 100.0,
+    "work_type": "ASSIGNMENT",
+    "assignee_mode": "ALL_STUDENTS",
+    "submission_modification_mode": "MODIFIABLE_UNTIL_TURNED_IN",
+    "creator_user_id": "teacher_2"
+  },
+  {
+    "id": "coursework_4",
+    "course_id": "course_2",
+    "title": "SEO y SEM",
+    "description": "Optimización de motores de búsqueda y publicidad",
+    "state": "PUBLISHED",
+    "alternate_link": "https://classroom.google.com/c/course_2/a/coursework_4",
+    "creation_time": "2024-02-15T10:00:00Z",
+    "update_time": "2024-02-15T10:00:00Z",
+    "due_date": "2024-02-28T23:59:59Z",
+    "due_time": "23:59",
+    "max_points": 75.0,
+    "work_type": "ASSIGNMENT",
+    "assignee_mode": "ALL_STUDENTS",
+    "submission_modification_mode": "MODIFIABLE_UNTIL_TURNED_IN",
+    "creator_user_id": "teacher_2"
+  }
+]

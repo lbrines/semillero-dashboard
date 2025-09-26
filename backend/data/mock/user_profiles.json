@@ -1,0 +1,80 @@
+[
+  {
+    "id": "teacher_1",
+    "name": {
+      "given_name": "Profesor",
+      "family_name": "Ecommerce",
+      "full_name": "Profesor Ecommerce"
+    },
+    "email_address": "profesor.ecommerce@instituto.edu",
+    "photo_url": "https://example.com/teacher1.jpg",
+    "verified_teacher": true,
+    "permissions": [
+      {
+        "permission": "CREATE_COURSE",
+        "role": "TEACHER"
+      }
+    ]
+  },
+  {
+    "id": "teacher_2",
+    "name": {
+      "given_name": "Profesor",
+      "family_name": "Marketing",
+      "full_name": "Profesor Marketing"
+    },
+    "email_address": "profesor.marketing@instituto.edu",
+    "photo_url": "https://example.com/teacher2.jpg",
+    "verified_teacher": true,
+    "permissions": [
+      {
+        "permission": "CREATE_COURSE",
+        "role": "TEACHER"
+      }
+    ]
+  },
+  {
+    "id": "student_1",
+    "name": {
+      "given_name": "Juan",
+      "family_name": "Pérez",
+      "full_name": "Juan Pérez"
+    },
+    "email_address": "juan.perez@estudiante.edu",
+    "photo_url": "https://example.com/photo1.jpg",
+    "verified_teacher": false
+  },
+  {
+    "id": "student_2",
+    "name": {
+      "given_name": "María",
+      "family_name": "García",
+      "full_name": "María García"
+    },
+    "email_address": "maria.garcia@estudiante.edu",
+    "photo_url": "https://example.com/photo2.jpg",
+    "verified_teacher": false
+  },
+  {
+    "id": "student_3",
+    "name": {
+      "given_name": "Carlos",
+      "family_name": "López",
+      "full_name": "Carlos López"
+    },
+    "email_address": "carlos.lopez@estudiante.edu",
+    "photo_url": "https://example.com/photo3.jpg",
+    "verified_teacher": false
+  },
+  {
+    "id": "student_4",
+    "name": {
+      "given_name": "Ana",
+      "family_name": "Martínez",
+      "full_name": "Ana Martínez"
+    },
+    "email_address": "ana.martinez@estudiante.edu",
+    "photo_url": "https://example.com/photo4.jpg",
+    "verified_teacher": false
+  }
+]

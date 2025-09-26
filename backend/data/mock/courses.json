@@ -1,0 +1,38 @@
+[
+  {
+    "id": "course_1",
+    "name": "Especialista en Ecommerce",
+    "section": "Cohorte 2024-1",
+    "description_heading": "Curso de Ecommerce",
+    "description": "Curso completo de especialización en comercio electrónico",
+    "room": "Aula Virtual",
+    "owner_id": "teacher_1",
+    "creation_time": "2024-01-15T10:00:00Z",
+    "update_time": "2024-01-15T10:00:00Z",
+    "enrollment_code": "ECOMM2024",
+    "course_state": "ACTIVE",
+    "alternate_link": "https://classroom.google.com/c/course_1",
+    "teacher_group_email": "teachers-ecommerce@instituto.edu",
+    "course_group_email": "students-ecommerce@instituto.edu",
+    "guardians_enabled": true,
+    "calendar_id": "calendar_1"
+  },
+  {
+    "id": "course_2",
+    "name": "Especialista en Marketing Digital",
+    "section": "Cohorte 2024-1",
+    "description_heading": "Curso de Marketing Digital",
+    "description": "Curso completo de especialización en marketing digital",
+    "room": "Aula Virtual",
+    "owner_id": "teacher_2",
+    "creation_time": "2024-01-20T10:00:00Z",
+    "update_time": "2024-01-20T10:00:00Z",
+    "enrollment_code": "MARKET2024",
+    "course_state": "ACTIVE",
+    "alternate_link": "https://classroom.google.com/c/course_2",
+    "teacher_group_email": "teachers-marketing@instituto.edu",
+    "course_group_email": "students-marketing@instituto.edu",
+    "guardians_enabled": true,
+    "calendar_id": "calendar_2"
+  }
+]

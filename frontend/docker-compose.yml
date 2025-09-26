@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runner
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:8000/api/v1
+      - NEXT_PUBLIC_BACKEND_URL=http://backend:8000
+      - NEXT_PUBLIC_DEMO_MODE=mock
+    networks:
+      - classroom-network
+    depends_on:
+      - backend
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+networks:
+  classroom-network:
+    driver: bridge

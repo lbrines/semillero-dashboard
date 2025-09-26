@@ -1,0 +1,22 @@
+{
+  "name": "semillero-dashboard-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "14.2.28",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "axios": "^1.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "20.2.5",
+    "@types/react": "18.2.8",
+    "@types/react-dom": "18.2.4",
+    "typescript": "5.1.3"
+  }
+}

@@ -1,0 +1,37 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "classroom-backend"
+version = "0.1.0"
+dependencies = [
+    "fastapi>=0.104.0",
+    "pydantic>=2.5.0",
+    "httpx>=0.25.0",
+    "uvicorn[standard]>=0.24.0",
+    "pytest>=7.4.0",
+    "pytest-asyncio>=0.21.0",
+    # Dependencias para Google Classroom API
+    "google-auth>=2.23.0",
+    "google-auth-oauthlib>=1.1.0",
+    "google-auth-httplib2>=0.1.1",
+    "google-api-python-client>=2.100.0",
+]
+
+# LECCIÓN APRENDIDA: Versiones específicas evitan problemas de compatibilidad
+# - fastapi>=0.104.0 - Versión estable probada
+# - pydantic>=2.5.0 - Compatibilidad con FastAPI
+# - httpx>=0.25.0 - Cliente HTTP async robusto
+
+[project.optional-dependencies]
+dev = [
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "pylint>=3.0.0",
+]
+
+# LECCIÓN APRENDIDA: Herramientas de calidad de código desde el inicio
+# - black>=23.0.0 - Formateo automático
+# - isort>=5.12.0 - Orden de imports
+# - pylint>=3.0.0 - Análisis de código
