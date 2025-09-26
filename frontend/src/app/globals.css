@@ -2,28 +2,97 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 @layer base {
   :root {
+    /* Semillero Brand Colors */
+    --semillero-primary: 158 100% 33%; /* #00A86B */
+    --semillero-primary-hover: 158 96% 20%; /* #059669 */
+    --semillero-secondary: 45 100% 70%; /* #FFD166 */
+    --semillero-accent: 45 100% 70%; /* #FFD166 */
+    
+    /* Neutral Colors */
+    --semillero-neutral-900: 0 0% 7%; /* #111111 */
+    --semillero-neutral-800: 0 0% 20%; /* #333333 */
+    --semillero-neutral-500: 220 9% 46%; /* #6B7280 */
+    --semillero-neutral-200: 220 13% 91%; /* #E5E7EB */
+    --semillero-neutral-50: 0 0% 100%; /* #FFFFFF */
+    
+    /* Role Colors */
+    --role-admin: 262 83% 58%; /* Purple */
+    --role-coordinator: 158 100% 33%; /* Green */
+    --role-teacher: 217 91% 60%; /* Blue */
+    --role-student: 38 92% 50%; /* Orange */
+    
+    /* Status Colors */
+    --status-success: 142 76% 36%;
+    --status-warning: 38 92% 50%;
+    --status-error: 0 84% 60%;
+    --status-info: 217 91% 60%;
+    
+    /* Shadcn/ui Compatible Variables */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 0 0% 7%;
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 0 0% 7%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222.2 84% 4.9%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96%;
-    --accent-foreground: 222.2 84% 4.9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 0.5rem;
+    --popover-foreground: 0 0% 7%;
+    
+    /* Primary (Semillero Green) */
+    --primary: 158 100% 33%;
+    --primary-foreground: 0 0% 100%;
+    
+    /* Secondary (Semillero Yellow) */
+    --secondary: 45 100% 70%;
+    --secondary-foreground: 0 0% 7%;
+    
+    /* Muted */
+    --muted: 220 13% 91%;
+    --muted-foreground: 220 9% 46%;
+    
+    /* Accent */
+    --accent: 45 100% 70%;
+    --accent-foreground: 0 0% 7%;
+    
+    /* Destructive */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+    
+    /* Border & Input */
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 158 100% 33%;
+    
+    /* Border Radius (16px) */
+    --radius: 1rem;
+    
+    /* Typography Scale (Inter) */
+    --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-size-xs: 0.75rem; /* 12px */
+    --font-size-sm: 0.875rem; /* 14px */
+    --font-size-base: 1rem; /* 16px */
+    --font-size-lg: 1.125rem; /* 18px */
+    --font-size-xl: 1.25rem; /* 20px */
+    --font-size-2xl: 1.5rem; /* 24px */
+    --font-size-3xl: 1.875rem; /* 30px */
+    --font-size-4xl: 2rem; /* 32px */
+    
+    /* Spacing Scale */
+    --space-1: 0.25rem; /* 4px */
+    --space-2: 0.5rem; /* 8px */
+    --space-3: 0.75rem; /* 12px */
+    --space-4: 1rem; /* 16px */
+    --space-6: 1.5rem; /* 24px */
+    --space-8: 2rem; /* 32px */
+    --space-12: 3rem; /* 48px */
+    --space-16: 4rem; /* 64px */
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   }
 
   .dark {
@@ -54,6 +123,142 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+}
+
+@layer components {
+  /* Semillero Button Styles */
+  .btn-semillero {
+    @apply inline-flex items-center justify-center rounded-2xl text-sm font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background;
+  }
+  
+  .btn-primary {
+    @apply btn-semillero bg-primary text-primary-foreground hover:bg-primary/90 shadow-md hover:shadow-lg;
+  }
+  
+  .btn-secondary {
+    @apply btn-semillero bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-md hover:shadow-lg;
+  }
+  
+  .btn-ghost {
+    @apply btn-semillero hover:bg-accent hover:text-accent-foreground;
+  }
+  
+  .btn-outline {
+    @apply btn-semillero border border-input bg-background hover:bg-accent hover:text-accent-foreground;
+  }
+  
+  /* Role-specific buttons */
+  .btn-admin {
+    @apply btn-semillero bg-purple-600 text-white hover:bg-purple-700 shadow-md hover:shadow-lg;
+  }
+  
+  .btn-coordinator {
+    @apply btn-semillero bg-green-600 text-white hover:bg-green-700 shadow-md hover:shadow-lg;
+  }
+  
+  .btn-teacher {
+    @apply btn-semillero bg-blue-600 text-white hover:bg-blue-700 shadow-md hover:shadow-lg;
+  }
+  
+  .btn-student {
+    @apply btn-semillero bg-orange-500 text-white hover:bg-orange-600 shadow-md hover:shadow-lg;
+  }
+  
+  /* Semillero Card Styles */
+  .card-semillero {
+    @apply rounded-2xl border bg-card text-card-foreground shadow-md hover:shadow-lg transition-shadow duration-200;
+  }
+  
+  .card-kpi {
+    @apply card-semillero p-6 hover:shadow-xl transition-all duration-200;
+  }
+  
+  /* Semillero Input Styles */
+  .input-semillero {
+    @apply flex h-12 w-full rounded-2xl border border-input bg-background px-4 py-3 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all duration-200;
+  }
+  
+  /* Semillero Typography */
+  .text-semillero-h1 {
+    @apply text-4xl font-bold tracking-tight text-foreground;
+  }
+  
+  .text-semillero-h2 {
+    @apply text-3xl font-semibold tracking-tight text-foreground;
+  }
+  
+  .text-semillero-h3 {
+    @apply text-2xl font-semibold tracking-tight text-foreground;
+  }
+  
+  .text-semillero-h4 {
+    @apply text-xl font-semibold tracking-tight text-foreground;
+  }
+  
+  .text-semillero-body {
+    @apply text-base leading-7 text-muted-foreground;
+  }
+  
+  .text-semillero-small {
+    @apply text-sm text-muted-foreground;
+  }
+  
+  /* Semillero Spacing Utilities */
+  .space-semillero {
+    @apply space-y-6;
+  }
+  
+  .space-semillero-sm {
+    @apply space-y-4;
+  }
+  
+  .space-semillero-lg {
+    @apply space-y-8;
+  }
+  
+  /* Semillero Container */
+  .container-semillero {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+  
+  /* Semillero Grid System */
+  .grid-semillero {
+    @apply grid gap-6;
+  }
+  
+  .grid-semillero-2 {
+    @apply grid grid-cols-1 gap-6 md:grid-cols-2;
+  }
+  
+  .grid-semillero-3 {
+    @apply grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3;
+  }
+  
+  .grid-semillero-4 {
+    @apply grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4;
+  }
+  
+  /* Status Badges */
+  .badge-success {
+    @apply inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800;
+  }
+  
+  .badge-warning {
+    @apply inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800;
+  }
+  
+  .badge-error {
+    @apply inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800;
+  }
+  
+  .badge-info {
+    @apply inline-flex items-center rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800;
+  }
+  
+  /* Mock Banner */
+  .mock-banner {
+    @apply fixed top-4 right-4 z-50 bg-yellow-100 border border-yellow-300 text-yellow-800 px-3 py-2 rounded-lg text-sm font-medium shadow-lg;
   }
 }

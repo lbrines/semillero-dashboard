@@ -2,90 +2,34 @@
 
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useAuth } from '@/contexts/AuthContext'
-import { useRole } from '@/contexts/RoleContext'
-import { StudentReportsView } from '@/components/views/StudentReportsView'
-import { TeacherReportsView } from '@/components/views/TeacherReportsView'
-import { CoordinatorReportsView } from '@/components/views/CoordinatorReportsView'
-import { AdminReportsView } from '@/components/views/AdminReportsView'
+// Componentes eliminados - imports removidos
 
 export default function ReportsPage() {
-  const { user } = useAuth()
-  const { role } = useRole()
   const router = useRouter()
 
-  useEffect(() => {
-    if (!role) {
-      router.push('/login')
-    }
-  }, [role, router])
-
-  if (!role) {
-    return (
-      <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh',
-        fontFamily: 'Arial, sans-serif'
-      }}>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{
-            width: '40px',
-            height: '40px',
-            border: '4px solid #f3f3f3',
-            borderTop: '4px solid #3498db',
-            borderRadius: '50%',
-            animation: 'spin 1s linear infinite',
-            margin: '0 auto 20px'
-          }}></div>
-          <p style={{ color: '#6c757d', margin: 0 }}>Determinando vista de reportes...</p>
+  return (
+    <div className="min-h-screen bg-gray-50 p-8">
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-white rounded-lg shadow-md p-8 text-center">
+          <h1 className="text-3xl font-bold text-gray-900 mb-4">
+            Reportes
+          </h1>
+          <p className="text-gray-600 mb-8">
+            Los componentes de reportes han sido eliminados del sistema.
+          </p>
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+            <p className="text-yellow-800">
+              <strong>Nota:</strong> Las vistas de reportes específicas por rol han sido removidas como parte de la limpieza del sistema.
+            </p>
+          </div>
+          <button
+            onClick={() => router.push('/login')}
+            className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors"
+          >
+            Volver al Login
+          </button>
         </div>
       </div>
-    )
-  }
-
-  if (!role) {
-    return null
-  }
-
-  // Render role-specific view
-  switch (role) {
-    case 'estudiante':
-      return <StudentReportsView />
-    case 'docente':
-      return <TeacherReportsView />
-    case 'coordinador':
-      return <CoordinatorReportsView />
-    case 'administrador':
-      return <AdminReportsView />
-    default:
-      return (
-        <div style={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh',
-          fontFamily: 'Arial, sans-serif'
-        }}>
-          <div style={{ textAlign: 'center', color: '#dc3545' }}>
-            <p>Rol no reconocido: {role}</p>
-            <button
-              onClick={() => router.push('/login')}
-              style={{
-                padding: '8px 16px',
-                backgroundColor: '#007bff',
-                color: 'white',
-                border: 'none',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                fontSize: '14px'
-              }}
-            >
-              Volver al Login
-            </button>
-          </div>
-        </div>
-      )
-  }
+    </div>
+  )
 }

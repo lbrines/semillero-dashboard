@@ -43,7 +43,7 @@ export default function CoursesPage() {
         setError(null)
 
         // Fetch courses
-        const coursesResponse = await axios.get('http://localhost:8000/api/v1/courses')
+        const coursesResponse = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/courses`)
         const coursesData = coursesResponse.data.courses || []
 
         // Fetch detailed data for each course
@@ -51,7 +51,7 @@ export default function CoursesPage() {
           coursesData.map(async (course: Course) => {
             try {
               // Fetch students for this course
-              const studentsResponse = await axios.get(`http://localhost:8000/api/v1/courses/${course.id}/students`)
+              const studentsResponse = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/courses/${course.id}/students`)
               const students = studentsResponse.data.students || []
               
               // Calculate metrics

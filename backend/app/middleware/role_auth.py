@@ -36,10 +36,10 @@ class RoleAuthMiddleware:
         
         # Parse whitelist from environment variable
         roles = {}
-        for role_entry in whitelist_str.split(","):
+        for role_entry in whitelist_str.split(";"):
             if ":" in role_entry:
                 role, emails = role_entry.split(":", 1)
-                roles[role.strip()] = [email.strip() for email in emails.split(";")]
+                roles[role.strip()] = [email.strip() for email in emails.split(",")]
         return roles
     
     def get_user_role(self, email: str) -> Optional[str]:

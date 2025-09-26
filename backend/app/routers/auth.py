@@ -1,8 +1,19 @@
 from fastapi import APIRouter, HTTPException, Query
 from ..services.google_auth import GoogleAuthService
+from ..middleware.role_auth import RoleAuthMiddleware
+from pydantic import BaseModel
 from typing import Optional
 
 router = APIRouter()
+
+class EmailValidationRequest(BaseModel):
+    email: str
+
+class EmailValidationResponse(BaseModel):
+    valid: bool
+    role: Optional[str] = None
+    name: Optional[str] = None
+    message: str
 
 @router.get("/auth/google/authorize")
 async def get_google_auth_url():
@@ -30,6 +41,50 @@ async def google_auth_callback(code: str = Query(..., description="Authorization
         raise HTTPException(status_code=500, detail="Could not create Google Classroom service")
     
     return {"message": "Authentication successful", "status": "authenticated"}
+
+@router.post("/auth/validate-email", response_model=EmailValidationResponse)
+async def validate_email(request: EmailValidationRequest):
+    """Validar email contra whitelist de roles"""
+    try:
+        role_middleware = RoleAuthMiddleware()
+        user_role = role_middleware.get_user_role(request.email)
+        
+        if user_role:
+            # Generar nombre basado en el rol y email
+            name = _generate_user_name(request.email, user_role)
+            
+            return EmailValidationResponse(
+                valid=True,
+                role=user_role,
+                name=name,
+                message=f"Email autorizado para rol: {user_role}"
+            )
+        else:
+            return EmailValidationResponse(
+                valid=False,
+                message="Email no autorizado. Contacta al administrador."
+            )
+            
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error validando email: {str(e)}"
+        )
+
+def _generate_user_name(email: str, role: str) -> str:
+    """Generar nombre de usuario basado en email y rol"""
+    email_prefix = email.split('@')[0]
+    
+    # Mapeo de roles a nombres en español
+    role_names = {
+        "student": "Estudiante",
+        "teacher": "Profesor", 
+        "coordinator": "Coordinador",
+        "admin": "Administrador"
+    }
+    
+    role_name = role_names.get(role, "Usuario")
+    return f"{role_name} {email_prefix.title()}"
 
 @router.get("/auth/status")
 async def get_auth_status():
