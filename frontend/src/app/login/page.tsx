@@ -25,12 +25,24 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
 
-  // Mock users para modo MOCK
-  const mockUsers: Record<string, User> = {
-    'student@example.com': { email: 'student@example.com', role: 'estudiante', name: 'Juan Estudiante' },
-    'teacher@example.com': { email: 'teacher@example.com', role: 'docente', name: 'María Profesora' },
-    'coord@example.com': { email: 'coord@example.com', role: 'coordinador', name: 'Carlos Coordinador' },
-    'admin@example.com': { email: 'admin@example.com', role: 'administrador', name: 'Ana Administradora' }
+  // Mock users para modo MOCK con contraseñas específicas
+  const mockUsers: Record<string, { user: User, password: string }> = {
+    'student@example.com': { 
+      user: { email: 'student@example.com', role: 'estudiante', name: 'Juan Estudiante' },
+      password: 'student123'
+    },
+    'teacher@example.com': { 
+      user: { email: 'teacher@example.com', role: 'docente', name: 'María Profesora' },
+      password: 'teacher123'
+    },
+    'coord@example.com': { 
+      user: { email: 'coord@example.com', role: 'coordinador', name: 'Carlos Coordinador' },
+      password: 'coord123'
+    },
+    'admin@example.com': { 
+      user: { email: 'admin@example.com', role: 'administrador', name: 'Ana Administradora' },
+      password: 'admin123'
+    }
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -50,20 +62,25 @@ export default function LoginPage() {
     try {
       if (formData.mode === 'mock') {
         // Validación en modo MOCK
-        const user = mockUsers[formData.email]
-        if (!user) {
+        const userData = mockUsers[formData.email]
+        if (!userData) {
           throw new Error('Email no autorizado. Usa: student@example.com, teacher@example.com, coord@example.com, admin@example.com')
+        }
+
+        // Validar contraseña
+        if (formData.password !== userData.password) {
+          throw new Error('Contraseña incorrecta. Usa las credenciales de la tabla de abajo.')
         }
 
         // Simular autenticación exitosa
         await new Promise(resolve => setTimeout(resolve, 1000))
         
         // Guardar datos de usuario en localStorage
-        localStorage.setItem('user', JSON.stringify(user))
+        localStorage.setItem('user', JSON.stringify(userData.user))
         localStorage.setItem('auth_mode', 'mock')
         
         // Redirigir según rol
-        redirectByRole(user.role)
+        redirectByRole(userData.user.role)
       } else {
         // Modo GOOGLE (placeholder para futura implementación)
         throw new Error('Modo Google OAuth no implementado aún')
@@ -252,15 +269,43 @@ export default function LoginPage() {
           fontSize: '14px',
           color: '#495057'
         }}>
-          <h4 style={{ margin: '0 0 10px 0', color: '#2c3e50' }}>Usuarios de Prueba (Modo MOCK):</h4>
-          <ul style={{ margin: 0, paddingLeft: '20px' }}>
-            <li><strong>Estudiante:</strong> student@example.com</li>
-            <li><strong>Profesor:</strong> teacher@example.com</li>
-            <li><strong>Coordinador:</strong> coord@example.com</li>
-            <li><strong>Administrador:</strong> admin@example.com</li>
-          </ul>
+          <h4 style={{ margin: '0 0 15px 0', color: '#2c3e50' }}>Usuarios de Prueba (Modo MOCK):</h4>
+          
+          {/* Matriz 3x4 */}
+          <div style={{ 
+            display: 'grid', 
+            gridTemplateColumns: '1fr 1fr 1fr', 
+            gap: '10px',
+            marginBottom: '15px'
+          }}>
+            {/* Headers */}
+            <div style={{ fontWeight: 'bold', color: '#2c3e50', padding: '8px', backgroundColor: '#dee2e6', borderRadius: '4px' }}>Usuario</div>
+            <div style={{ fontWeight: 'bold', color: '#2c3e50', padding: '8px', backgroundColor: '#dee2e6', borderRadius: '4px' }}>Correo</div>
+            <div style={{ fontWeight: 'bold', color: '#2c3e50', padding: '8px', backgroundColor: '#dee2e6', borderRadius: '4px' }}>Clave</div>
+            
+            {/* Fila 1 */}
+            <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', border: '1px solid #ced4da' }}>Estudiante</div>
+            <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', border: '1px solid #ced4da' }}>student@example.com</div>
+            <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', border: '1px solid #ced4da' }}>student123</div>
+            
+            {/* Fila 2 */}
+            <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', border: '1px solid #ced4da' }}>Profesor</div>
+            <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', border: '1px solid #ced4da' }}>teacher@example.com</div>
+            <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', border: '1px solid #ced4da' }}>teacher123</div>
+            
+            {/* Fila 3 */}
+            <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', border: '1px solid #ced4da' }}>Coordinador</div>
+            <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', border: '1px solid #ced4da' }}>coord@example.com</div>
+            <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', border: '1px solid #ced4da' }}>coord123</div>
+            
+            {/* Fila 4 */}
+            <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', border: '1px solid #ced4da' }}>Administrador</div>
+            <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', border: '1px solid #ced4da' }}>admin@example.com</div>
+            <div style={{ padding: '8px', backgroundColor: 'white', borderRadius: '4px', border: '1px solid #ced4da' }}>admin123</div>
+          </div>
+          
           <p style={{ margin: '10px 0 0 0', fontSize: '12px', color: '#6c757d' }}>
-            Contraseña: cualquier valor
+            Usa las credenciales de la tabla para iniciar sesión
           </p>
         </div>
       </div>

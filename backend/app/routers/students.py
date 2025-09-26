@@ -3,6 +3,8 @@ from typing import Optional
 from ..services.base import BaseDataDriver
 from .dependencies import get_data_driver
 from ..models.student import StudentListResponse, Student
+from ..models.reports import StudentDashboard
+from ..services.reports_service import reports_service
 
 router = APIRouter()
 
@@ -167,6 +169,32 @@ async def get_students_by_course(
         return StudentListResponse(**result)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error fetching students: {str(e)}")
+
+@router.get("/students/{student_id}/dashboard", response_model=StudentDashboard)
+async def get_student_dashboard(student_id: str):
+    """Get comprehensive dashboard data for a specific student"""
+    try:
+        dashboard = reports_service.get_student_dashboard(student_id)
+        return dashboard
+    except ValueError as e:
+        if "not found" in str(e).lower():
+            raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error generating student dashboard: {str(e)}")
+
+
+@router.get("/students/stats")
+async def get_student_stats():
+    """Obtener estadísticas de un estudiante específico - DEPRECATED: Use /students/{id}/dashboard instead"""
+    return {
+        "myCourses": 2,
+        "completedSubmissions": 8,
+        "pendingSubmissions": 3,
+        "averageGrade": 8.5,
+        "completionRate": 75.0,
+        "lateSubmissions": 1
+    }
 
 
 # LECCIÓN APRENDIDA: Endpoints anidados para relaciones

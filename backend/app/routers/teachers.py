@@ -3,6 +3,8 @@ from pydantic import BaseModel, EmailStr
 from typing import List, Optional
 from ..services.base import BaseDataDriver
 from .dependencies import get_data_driver
+from ..models.reports import TeacherDashboard
+from ..services.reports_service import reports_service
 
 router = APIRouter()
 
@@ -142,6 +144,20 @@ async def identify_teacher_google(
     """Identificar profesor con Google OAuth (WOW opcional)"""
     # Por ahora, redirigir al modo MOCK
     return await identify_teacher(request, data_driver)
+
+@router.get("/teachers/{teacher_id}/dashboard", response_model=TeacherDashboard)
+async def get_teacher_dashboard(teacher_id: str):
+    """Get comprehensive dashboard data for a specific teacher"""
+    try:
+        dashboard = reports_service.get_teacher_dashboard(teacher_id)
+        return dashboard
+    except ValueError as e:
+        if "not found" in str(e).lower():
+            raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error generating teacher dashboard: {str(e)}")
+
 
 @router.get("/teachers/{email}/courses-google")
 async def get_teacher_courses_google(

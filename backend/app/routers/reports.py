@@ -8,7 +8,10 @@ from fastapi import APIRouter, Request, HTTPException, status, Query
 from fastapi.responses import JSONResponse
 import logging
 
-from ..models.reports import ReportCohortProgressResponse, RoleAuthResponse
+from ..models.reports import (
+    ReportCohortProgressResponse, RoleAuthResponse, KPIResponse,
+    CoordinatorDashboard, AdminDashboard
+)
 from ..services.reports_service import reports_service
 from ..middleware.role_auth import role_auth
 
@@ -135,6 +138,105 @@ async def validate_role_auth(request: Request):
             user=None,
             message=f"Role validation error: {str(e)}"
         )
+
+
+@router.get("/kpis", response_model=KPIResponse)
+async def get_global_kpis(request: Request):
+    """
+    Get global KPIs (Key Performance Indicators) for the system
+    Requires authentication but available to all roles
+    """
+    try:
+        # Authenticate user (but allow all roles to access KPIs)
+        user = await role_auth.authenticate_user(request)
+        if not user:
+            # For KPIs, we'll allow unauthenticated access in MOCK mode
+            if reports_service.demo_mode != "mock":
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Authentication required"
+                )
+
+        # Calculate and return KPIs
+        kpis = reports_service.calculate_global_kpis()
+
+        if user:
+            logger.info(f"Generated KPIs for user {user['email']} with role {user['role']}")
+        else:
+            logger.info("Generated KPIs for unauthenticated access (MOCK mode)")
+
+        return kpis
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error generating KPIs: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to generate KPIs"
+        )
+
+
+@router.get("/coordinators/{coordinator_id}/dashboard", response_model=CoordinatorDashboard)
+async def get_coordinator_dashboard(coordinator_id: str, request: Request):
+    """Get comprehensive dashboard data for a coordinator"""
+    try:
+        # Authenticate user
+        user = await role_auth.authenticate_user(request)
+        if not user:
+            # Allow unauthenticated access in MOCK mode
+            if reports_service.demo_mode != "mock":
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Authentication required"
+                )
+
+        dashboard = reports_service.get_coordinator_dashboard(coordinator_id)
+
+        if user:
+            logger.info(f"Generated coordinator dashboard for user {user['email']}")
+        else:
+            logger.info("Generated coordinator dashboard for unauthenticated access (MOCK mode)")
+
+        return dashboard
+    except ValueError as e:
+        if "not found" in str(e).lower():
+            raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Error generating coordinator dashboard: {e}")
+        raise HTTPException(status_code=500, detail=f"Error generating coordinator dashboard: {str(e)}")
+
+
+@router.get("/admin/dashboard", response_model=AdminDashboard)
+async def get_admin_dashboard(request: Request, admin_id: str = "admin_001"):
+    """Get comprehensive dashboard data for system administrator"""
+    try:
+        # Authenticate user
+        user = await role_auth.authenticate_user(request)
+        if not user:
+            # Allow unauthenticated access in MOCK mode
+            if reports_service.demo_mode != "mock":
+                raise HTTPException(
+                    status_code=status.HTTP_401_UNAUTHORIZED,
+                    detail="Authentication required"
+                )
+
+        dashboard = reports_service.get_admin_dashboard(admin_id)
+
+        if user:
+            logger.info(f"Generated admin dashboard for user {user['email']}")
+        else:
+            logger.info("Generated admin dashboard for unauthenticated access (MOCK mode)")
+
+        return dashboard
+    except ValueError as e:
+        if "not found" in str(e).lower():
+            raise HTTPException(status_code=404, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        logger.error(f"Error generating admin dashboard: {e}")
+        raise HTTPException(status_code=500, detail=f"Error generating admin dashboard: {str(e)}")
 
 
 @router.get("/demo-mode", response_model=dict)

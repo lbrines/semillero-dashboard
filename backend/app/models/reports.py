@@ -32,6 +32,22 @@ class ReportCohortProgress(BaseModel):
     is_google_data: bool = Field(default=False, description="Indicates if data comes from Google Classroom API")
 
 
+class ChartDataPoint(BaseModel):
+    """Model for chart data points"""
+    name: str = Field(..., description="Cohort or category name")
+    onTime: int = Field(..., description="On-time submissions count")
+    late: int = Field(..., description="Late submissions count")
+    percentage: float = Field(..., description="On-time percentage")
+
+
+class TrendsData(BaseModel):
+    """Model for trends data over time"""
+    period: str = Field(..., description="Time period (week, month)")
+    onTimeSubmissions: int = Field(..., description="On-time submissions in period")
+    lateSubmissions: int = Field(..., description="Late submissions in period")
+    totalSubmissions: int = Field(..., description="Total submissions in period")
+
+
 class ReportCohortProgressResponse(BaseModel):
     """Response model for cohort progress reports"""
     cohorts: List[ReportCohortProgress] = Field(..., description="List of cohort progress reports")
@@ -39,6 +55,9 @@ class ReportCohortProgressResponse(BaseModel):
     page_size: int = Field(..., description="Page size for pagination")
     page_token: Optional[str] = Field(None, description="Token for next page")
     has_next_page: bool = Field(..., description="Indicates if there are more pages")
+    chartData: List[ChartDataPoint] = Field(..., description="Data formatted for Tremor charts")
+    trends: List[TrendsData] = Field(..., description="Trends data over time periods")
+    summary: dict = Field(..., description="Summary statistics for dashboard")
 
 
 class RoleUser(BaseModel):
@@ -59,3 +78,94 @@ class RoleAuthResponse(BaseModel):
     authenticated: bool = Field(..., description="Authentication status")
     user: Optional[RoleUser] = Field(None, description="User information if authenticated")
     message: str = Field(..., description="Response message")
+
+
+class KPIResponse(BaseModel):
+    """Model for global KPIs response"""
+    totalStudents: int = Field(..., description="Total number of students")
+    totalCourses: int = Field(..., description="Total number of active courses")
+    totalSubmissions: int = Field(..., description="Total number of submissions")
+    lateSubmissions: int = Field(..., description="Total number of late submissions")
+    averageCompletionRate: float = Field(..., description="Average completion rate percentage")
+    studentsAtRisk: int = Field(..., description="Number of students at risk (completion rate < 50%)")
+    totalTeachers: int = Field(..., description="Total number of teachers")
+    activeCourses: int = Field(..., description="Number of active courses")
+    completedAssignments: int = Field(..., description="Total number of completed assignments")
+    pendingAssignments: int = Field(..., description="Total number of pending assignments")
+    onTimeSubmissions: int = Field(..., description="Total number of on-time submissions")
+    onTimePercentage: float = Field(..., description="On-time submissions percentage")
+    demo_mode: str = Field(..., description="Current demo mode (mock or google)")
+    is_google_data: bool = Field(default=False, description="Indicates if data comes from Google Classroom API")
+
+
+class UpcomingDeadline(BaseModel):
+    """Model for upcoming assignment deadlines"""
+    assignment_id: str = Field(..., description="Assignment identifier")
+    assignment_title: str = Field(..., description="Assignment title")
+    course_name: str = Field(..., description="Course name")
+    due_date: str = Field(..., description="Due date in ISO format")
+    days_remaining: int = Field(..., description="Days remaining until deadline")
+
+
+class RecentActivity(BaseModel):
+    """Model for recent student activity"""
+    activity_type: str = Field(..., description="Type of activity (submission, grade, etc.)")
+    assignment_title: str = Field(..., description="Assignment title")
+    course_name: str = Field(..., description="Course name")
+    activity_date: str = Field(..., description="Activity date in ISO format")
+    status: str = Field(..., description="Activity status")
+
+
+class StudentDashboard(BaseModel):
+    """Model for student dashboard response"""
+    student_id: str = Field(..., description="Student identifier")
+    student_name: str = Field(..., description="Student full name")
+    myCourses: int = Field(..., description="Number of enrolled courses")
+    completedSubmissions: int = Field(..., description="Number of completed submissions")
+    pendingSubmissions: int = Field(..., description="Number of pending submissions")
+    averageGrade: float = Field(..., description="Average grade across all assignments")
+    completionRate: float = Field(..., description="Overall completion rate percentage")
+    lateSubmissions: int = Field(..., description="Number of late submissions")
+    upcomingDeadlines: List[UpcomingDeadline] = Field(..., description="List of upcoming deadlines")
+    recentActivity: List[RecentActivity] = Field(..., description="List of recent activities")
+    isAtRisk: bool = Field(..., description="Whether student is at academic risk")
+    demo_mode: str = Field(..., description="Current demo mode (mock or google)")
+
+
+class TeacherDashboard(BaseModel):
+    """Model for teacher dashboard response"""
+    teacher_id: str = Field(..., description="Teacher identifier")
+    teacher_name: str = Field(..., description="Teacher full name")
+    myClasses: int = Field(..., description="Number of classes taught")
+    totalStudents: int = Field(..., description="Total number of students across all classes")
+    pendingGrading: int = Field(..., description="Number of submissions pending grading")
+    averageClassGrade: float = Field(..., description="Average grade across all classes")
+    studentProgress: List[dict] = Field(..., description="Progress summary of students")
+    upcomingDeadlines: List[UpcomingDeadline] = Field(..., description="List of upcoming assignment deadlines")
+    demo_mode: str = Field(..., description="Current demo mode (mock or google)")
+
+
+class CoordinatorDashboard(BaseModel):
+    """Model for coordinator dashboard response"""
+    coordinator_id: str = Field(..., description="Coordinator identifier")
+    coordinator_name: str = Field(..., description="Coordinator full name")
+    totalCohorts: int = Field(..., description="Total number of cohorts managed")
+    totalStudents: int = Field(..., description="Total students across all cohorts")
+    totalTeachers: int = Field(..., description="Total teachers managed")
+    averageCohortProgress: float = Field(..., description="Average progress across all cohorts")
+    cohortsAtRisk: int = Field(..., description="Number of cohorts requiring attention")
+    upcomingMilestones: List[dict] = Field(..., description="List of upcoming milestones")
+    demo_mode: str = Field(..., description="Current demo mode (mock or google)")
+
+
+class AdminDashboard(BaseModel):
+    """Model for admin dashboard response"""
+    admin_id: str = Field(..., description="Admin identifier")
+    admin_name: str = Field(..., description="Admin full name")
+    totalInstitutions: int = Field(..., description="Total institutions managed")
+    totalCoordinators: int = Field(..., description="Total coordinators")
+    totalTeachers: int = Field(..., description="Total teachers")
+    totalStudents: int = Field(..., description="Total students")
+    systemHealth: dict = Field(..., description="System health metrics")
+    recentAlerts: List[dict] = Field(..., description="Recent system alerts")
+    demo_mode: str = Field(..., description="Current demo mode (mock or google)")

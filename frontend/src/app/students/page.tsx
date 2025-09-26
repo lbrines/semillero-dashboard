@@ -3,10 +3,53 @@
 import { useAuth } from '@/contexts/AuthContext'
 import { useRole } from '@/contexts/RoleContext'
 import { RoleGuard } from '@/components/RoleGuard'
+import { useStudentStats } from '@/hooks/useStudentStats'
 
 export default function StudentsPage() {
   const { user, logout } = useAuth()
   const { role } = useRole()
+  const { stats, loading, error } = useStudentStats()
+
+  if (loading) {
+    return (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '100vh',
+        fontFamily: 'Arial, sans-serif'
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ 
+            width: '40px', 
+            height: '40px', 
+            border: '4px solid #f3f3f3', 
+            borderTop: '4px solid #3498db', 
+            borderRadius: '50%', 
+            animation: 'spin 1s linear infinite',
+            margin: '0 auto 20px'
+          }}></div>
+          <p style={{ color: '#6c757d', margin: 0 }}>Cargando estadísticas...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '100vh',
+        fontFamily: 'Arial, sans-serif'
+      }}>
+        <div style={{ textAlign: 'center', color: '#dc3545' }}>
+          <p>{error}</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <RoleGuard requiredRole="estudiante">
@@ -56,7 +99,7 @@ export default function StudentsPage() {
           }}>
             <h3 style={{ margin: '0 0 10px 0', color: '#495057' }}>Mis Cursos</h3>
             <p style={{ margin: 0, fontSize: '24px', fontWeight: 'bold', color: '#007bff' }}>
-              2
+              {stats?.myCourses || 0}
             </p>
           </div>
           <div style={{ 
@@ -68,7 +111,7 @@ export default function StudentsPage() {
           }}>
             <h3 style={{ margin: '0 0 10px 0', color: '#495057' }}>Entregas Completadas</h3>
             <p style={{ margin: 0, fontSize: '24px', fontWeight: 'bold', color: '#28a745' }}>
-              8
+              {stats?.completedSubmissions || 0}
             </p>
           </div>
           <div style={{ 
@@ -80,7 +123,7 @@ export default function StudentsPage() {
           }}>
             <h3 style={{ margin: '0 0 10px 0', color: '#495057' }}>Entregas a Tiempo</h3>
             <p style={{ margin: 0, fontSize: '24px', fontWeight: 'bold', color: '#28a745' }}>
-              6
+              {(stats?.completedSubmissions || 0) - (stats?.lateSubmissions || 0)}
             </p>
           </div>
           <div style={{ 
@@ -92,7 +135,7 @@ export default function StudentsPage() {
           }}>
             <h3 style={{ margin: '0 0 10px 0', color: '#495057' }}>Entregas Tardías</h3>
             <p style={{ margin: 0, fontSize: '24px', fontWeight: 'bold', color: '#dc3545' }}>
-              2
+              {stats?.lateSubmissions || 0}
             </p>
           </div>
         </div>
@@ -114,7 +157,7 @@ export default function StudentsPage() {
             }}>
               <h3 style={{ margin: '0 0 10px 0', color: '#2c3e50' }}>Especialista en Ecommerce</h3>
               <p style={{ margin: '0 0 10px 0', color: '#7f8c8d' }}>Cohorte 2024-1</p>
-              <p style={{ margin: '0 0 15px 0', color: '#495057' }}>Progreso: 80% completado</p>
+              <p style={{ margin: '0 0 15px 0', color: '#495057' }}>Progreso: {stats?.completionRate || 0}% completado</p>
               <div style={{ 
                 width: '100%', 
                 backgroundColor: '#e9ecef', 
@@ -123,7 +166,7 @@ export default function StudentsPage() {
                 marginBottom: '10px'
               }}>
                 <div style={{ 
-                  width: '80%', 
+                  width: `${stats?.completionRate || 0}%`, 
                   backgroundColor: '#28a745', 
                   height: '8px', 
                   borderRadius: '4px' 

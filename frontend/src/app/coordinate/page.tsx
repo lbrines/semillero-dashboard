@@ -3,10 +3,53 @@
 import { useAuth } from '@/contexts/AuthContext'
 import { useRole } from '@/contexts/RoleContext'
 import { RoleGuard } from '@/components/RoleGuard'
+import { useCoordinatorStats } from '@/hooks/useCoordinatorStats'
 
 export default function CoordinatePage() {
   const { user, logout } = useAuth()
   const { role, canSearchStudents, canViewAllReports } = useRole()
+  const { stats, loading, error } = useCoordinatorStats()
+
+  if (loading) {
+    return (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '100vh',
+        fontFamily: 'Arial, sans-serif'
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ 
+            width: '40px', 
+            height: '40px', 
+            border: '4px solid #f3f3f3', 
+            borderTop: '4px solid #3498db', 
+            borderRadius: '50%', 
+            animation: 'spin 1s linear infinite',
+            margin: '0 auto 20px'
+          }}></div>
+          <p style={{ color: '#6c757d', margin: 0 }}>Cargando estadísticas del coordinador...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '100vh',
+        fontFamily: 'Arial, sans-serif'
+      }}>
+        <div style={{ textAlign: 'center', color: '#dc3545' }}>
+          <p>{error}</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <RoleGuard requiredRole="coordinador">
@@ -253,11 +296,11 @@ export default function CoordinatePage() {
             }}>
               <div style={{ textAlign: 'center' }}>
                 <h4 style={{ margin: '0 0 10px 0', color: '#495057' }}>Tasa de Completitud</h4>
-                <p style={{ margin: 0, fontSize: '20px', fontWeight: 'bold', color: '#28a745' }}>79%</p>
+                <p style={{ margin: 0, fontSize: '20px', fontWeight: 'bold', color: '#28a745' }}>{stats?.completionRate || 0}%</p>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <h4 style={{ margin: '0 0 10px 0', color: '#495057' }}>Tasa de Puntualidad</h4>
-                <p style={{ margin: 0, fontSize: '20px', fontWeight: 'bold', color: '#17a2b8' }}>85%</p>
+                <p style={{ margin: 0, fontSize: '20px', fontWeight: 'bold', color: '#17a2b8' }}>{stats?.punctualityRate || 0}%</p>
               </div>
               <div style={{ textAlign: 'center' }}>
                 <h4 style={{ margin: '0 0 10px 0', color: '#495057' }}>Satisfacción Estudiantil</h4>
@@ -327,10 +370,10 @@ export default function CoordinatePage() {
               </thead>
               <tbody>
                 <tr>
-                  <td style={{ padding: '12px', borderBottom: '1px solid #f0f0f0' }}>Juan Pérez</td>
-                  <td style={{ padding: '12px', borderBottom: '1px solid #f0f0f0' }}>Ecommerce 2024-1</td>
-                  <td style={{ padding: '12px', borderBottom: '1px solid #f0f0f0' }}>80%</td>
-                  <td style={{ padding: '12px', borderBottom: '1px solid #f0f0f0' }}>9.2</td>
+                  <td style={{ padding: '12px', borderBottom: '1px solid #f0f0f0' }}>{stats?.studentProgress[0]?.name || 'Juan Pérez'}</td>
+                  <td style={{ padding: '12px', borderBottom: '1px solid #f0f0f0' }}>{stats?.studentProgress[0]?.course || 'Ecommerce 2024-1'}</td>
+                  <td style={{ padding: '12px', borderBottom: '1px solid #f0f0f0' }}>{stats?.studentProgress[0]?.completionRate || 80}%</td>
+                  <td style={{ padding: '12px', borderBottom: '1px solid #f0f0f0' }}>{stats?.studentProgress[0]?.averageGrade || 9.2}</td>
                   <td style={{ padding: '12px', borderBottom: '1px solid #f0f0f0' }}>
                     <span style={{ 
                       padding: '4px 8px', 

@@ -9,7 +9,7 @@
         "family_name": "Pérez",
         "full_name": "Juan Pérez"
       },
-      "email_address": "juan.perez@estudiante.edu",
+      "email_address": "student@example.com",
       "photo_url": "https://example.com/photo1.jpg",
       "verified_teacher": false
     }
@@ -24,7 +24,7 @@
         "family_name": "García",
         "full_name": "María García"
       },
-      "email_address": "maria.garcia@estudiante.edu",
+      "email_address": "teacher@example.com",
       "photo_url": "https://example.com/photo2.jpg",
       "verified_teacher": false
     }
@@ -39,7 +39,7 @@
         "family_name": "López",
         "full_name": "Carlos López"
       },
-      "email_address": "carlos.lopez@estudiante.edu",
+      "email_address": "coord@example.com",
       "photo_url": "https://example.com/photo3.jpg",
       "verified_teacher": false
     }
@@ -54,7 +54,7 @@
         "family_name": "Martínez",
         "full_name": "Ana Martínez"
       },
-      "email_address": "ana.martinez@estudiante.edu",
+      "email_address": "admin@example.com",
       "photo_url": "https://example.com/photo4.jpg",
       "verified_teacher": false
     }

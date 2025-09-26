@@ -3,10 +3,53 @@
 import { useAuth } from '@/contexts/AuthContext'
 import { useRole } from '@/contexts/RoleContext'
 import { RoleGuard } from '@/components/RoleGuard'
+import { useTeacherStats } from '@/hooks/useTeacherStats'
 
 export default function TeacherPage() {
   const { user, logout } = useAuth()
   const { role, canSearchStudents } = useRole()
+  const { stats, loading, error } = useTeacherStats()
+
+  if (loading) {
+    return (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '100vh',
+        fontFamily: 'Arial, sans-serif'
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <div style={{ 
+            width: '40px', 
+            height: '40px', 
+            border: '4px solid #f3f3f3', 
+            borderTop: '4px solid #3498db', 
+            borderRadius: '50%', 
+            animation: 'spin 1s linear infinite',
+            margin: '0 auto 20px'
+          }}></div>
+          <p style={{ color: '#6c757d', margin: 0 }}>Cargando estadísticas del profesor...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '100vh',
+        fontFamily: 'Arial, sans-serif'
+      }}>
+        <div style={{ textAlign: 'center', color: '#dc3545' }}>
+          <p>{error}</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <RoleGuard requiredRole="docente">

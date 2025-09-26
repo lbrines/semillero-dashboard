@@ -10,13 +10,17 @@ interface RoleGuardProps {
   requiredRole?: string
   requiredPermission?: string
   fallbackPath?: string
+  allowedRoles?: string[]
+  redirectToRoleBasedView?: boolean
 }
 
-export function RoleGuard({ 
-  children, 
-  requiredRole, 
-  requiredPermission, 
-  fallbackPath = '/login' 
+export function RoleGuard({
+  children,
+  requiredRole,
+  requiredPermission,
+  fallbackPath = '/login',
+  allowedRoles,
+  redirectToRoleBasedView = false
 }: RoleGuardProps) {
   const { isAuthenticated, isLoading } = useAuth()
   const { role, hasPermission } = useRole()
@@ -30,16 +34,40 @@ export function RoleGuard({
       return
     }
 
+    // Handle role-based redirection
+    if (redirectToRoleBasedView && role) {
+      const roleBasedPaths = {
+        'estudiante': '/students',
+        'docente': '/teacher',
+        'coordinador': '/coordinate',
+        'administrador': '/overview'
+      }
+
+      const targetPath = roleBasedPaths[role as keyof typeof roleBasedPaths]
+      if (targetPath && router.pathname !== targetPath) {
+        router.push(targetPath)
+        return
+      }
+    }
+
+    // Check specific role requirement
     if (requiredRole && role !== requiredRole) {
       router.push(fallbackPath)
       return
     }
 
+    // Check if role is in allowed roles list
+    if (allowedRoles && role && !allowedRoles.includes(role)) {
+      router.push(fallbackPath)
+      return
+    }
+
+    // Check specific permission requirement
     if (requiredPermission && !hasPermission(requiredPermission)) {
       router.push(fallbackPath)
       return
     }
-  }, [isAuthenticated, isLoading, role, requiredRole, requiredPermission, hasPermission, router, fallbackPath])
+  }, [isAuthenticated, isLoading, role, requiredRole, requiredPermission, hasPermission, router, fallbackPath, allowedRoles, redirectToRoleBasedView])
 
   if (isLoading) {
     return (
@@ -78,16 +106,65 @@ export function RoleGuard({
 
   if (requiredRole && role !== requiredRole) {
     return (
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
         height: '100vh',
         fontFamily: 'Arial, sans-serif'
       }}>
         <div style={{ textAlign: 'center' }}>
           <h2 style={{ color: '#dc3545', margin: '0 0 10px 0' }}>Acceso Denegado</h2>
-          <p style={{ color: '#6c757d', margin: 0 }}>No tienes permisos para acceder a esta página</p>
+          <p style={{ color: '#6c757d', margin: '0 0 15px 0' }}>
+            Se requiere rol: {requiredRole}. Tu rol actual: {role}
+          </p>
+          <button
+            onClick={() => router.push('/login')}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: '#007bff',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontSize: '14px'
+            }}
+          >
+            Volver al Login
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  if (allowedRoles && role && !allowedRoles.includes(role)) {
+    return (
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        fontFamily: 'Arial, sans-serif'
+      }}>
+        <div style={{ textAlign: 'center' }}>
+          <h2 style={{ color: '#dc3545', margin: '0 0 10px 0' }}>Acceso Restringido</h2>
+          <p style={{ color: '#6c757d', margin: '0 0 15px 0' }}>
+            Tu rol ({role}) no tiene acceso a esta función
+          </p>
+          <button
+            onClick={() => router.push('/reports')}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: '#28a745',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontSize: '14px'
+            }}
+          >
+            Ir a Reportes
+          </button>
         </div>
       </div>
     )

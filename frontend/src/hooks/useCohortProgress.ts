@@ -23,12 +23,34 @@ export interface CohortProgress {
   is_google_data: boolean;
 }
 
+export interface ChartDataPoint {
+  name: string;
+  onTime: number;
+  late: number;
+  percentage: number;
+}
+
+export interface TrendsData {
+  period: string;
+  onTimeSubmissions: number;
+  lateSubmissions: number;
+  totalSubmissions: number;
+}
+
 export interface CohortProgressResponse {
   cohorts: CohortProgress[];
   total_cohorts: number;
   page_size: number;
   page_token: string | null;
   has_next_page: boolean;
+  chartData: ChartDataPoint[];
+  trends: TrendsData[];
+  summary: {
+    totalSubmissions: number;
+    overallOnTimePercentage: number;
+    bestPerformingCohort: string;
+    worstPerformingCohort: string;
+  };
 }
 
 export function useCohortProgress() {
@@ -53,7 +75,7 @@ export function useCohortProgress() {
       if (pageToken) params.append('pageToken', pageToken);
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL || 'http://backend:8000'}/api/v1/reports/cohort-progress?${params}`,
+        `http://localhost:8000/api/v1/reports/cohort-progress?${params}`,
         {
           headers: {
             'X-User-Email': 'admin@instituto.edu', // Mock authentication
@@ -67,10 +89,34 @@ export function useCohortProgress() {
       }
 
       const result = await response.json();
+      console.log('Cohort progress data fetched:', result);
       setData(result);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al cargar datos de reportes');
       console.error('Error fetching cohort progress:', err);
+
+      // Fallback data if server is down
+      setData({
+        cohorts: [],
+        total_cohorts: 2,
+        page_size: 10,
+        page_token: null,
+        has_next_page: false,
+        chartData: [
+          { name: 'Ecommerce', onTime: 8, late: 4, percentage: 66.7 },
+          { name: 'Marketing', onTime: 6, late: 6, percentage: 50.0 }
+        ],
+        trends: [
+          { period: 'Enero 2024', onTimeSubmissions: 10, lateSubmissions: 5, totalSubmissions: 15 },
+          { period: 'Febrero 2024', onTimeSubmissions: 14, lateSubmissions: 10, totalSubmissions: 24 }
+        ],
+        summary: {
+          totalSubmissions: 24,
+          overallOnTimePercentage: 58.3,
+          bestPerformingCohort: 'Ecommerce 2024-1',
+          worstPerformingCohort: 'Marketing 2024-1'
+        }
+      });
     } finally {
       setLoading(false);
     }
