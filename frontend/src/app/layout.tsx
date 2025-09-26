@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import { AuthProvider } from '@/contexts/AuthContext'
+import { RoleProvider } from '@/contexts/RoleContext'
 
 export const metadata: Metadata = {
   title: 'Semillero Dashboard',
@@ -13,7 +15,11 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body>
-        {children}
+        <AuthProvider>
+          <RoleProvider>
+            {children}
+          </RoleProvider>
+        </AuthProvider>
       </body>
     </html>
   )

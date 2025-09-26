@@ -1,6 +1,16 @@
+'use client'
+
+import { useAuth } from '@/contexts/AuthContext'
+import { useRole } from '@/contexts/RoleContext'
+import { RoleGuard } from '@/components/RoleGuard'
+
 export default function ReportsPage() {
+  const { user, logout } = useAuth()
+  const { role, canViewAllReports } = useRole()
+
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif', maxWidth: '1200px', margin: '0 auto' }}>
+    <RoleGuard requiredPermission="VIEW_GLOBAL_REPORTS">
+      <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif', maxWidth: '1200px', margin: '0 auto' }}>
       {/* Header */}
       <div style={{ 
         display: 'flex', 
@@ -10,13 +20,24 @@ export default function ReportsPage() {
         paddingBottom: '20px',
         borderBottom: '2px solid #e0e0e0'
       }}>
-        <h1 style={{ margin: 0, color: '#2c3e50' }}>Reportes Académicos</h1>
-        <nav style={{ display: 'flex', gap: '20px' }}>
-          <a href="/" style={{ textDecoration: 'none', color: '#7f8c8d' }}>Dashboard</a>
-          <a href="/students" style={{ textDecoration: 'none', color: '#7f8c8d' }}>Estudiantes</a>
-          <a href="/courses" style={{ textDecoration: 'none', color: '#7f8c8d' }}>Cursos</a>
-          <a href="/reports" style={{ textDecoration: 'none', color: '#3498db', fontWeight: 'bold' }}>Reportes</a>
-        </nav>
+        <div>
+          <h1 style={{ margin: '0 0 5px 0', color: '#2c3e50' }}>Reportes Académicos</h1>
+          <p style={{ margin: 0, color: '#6c757d' }}>Bienvenido, {user?.name} ({role})</p>
+        </div>
+        <button 
+          onClick={logout}
+          style={{
+            padding: '8px 16px',
+            backgroundColor: '#dc3545',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '14px'
+          }}
+        >
+          Cerrar Sesión
+        </button>
       </div>
 
       {/* KPIs */}
@@ -206,5 +227,6 @@ export default function ReportsPage() {
         </div>
       </div>
     </div>
+    </RoleGuard>
   )
 }
