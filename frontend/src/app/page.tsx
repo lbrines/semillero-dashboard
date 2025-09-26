@@ -183,15 +183,23 @@ export default function Home() {
           <h1 style={{ margin: 0, color: '#2c3e50' }}>Semillero Dashboard</h1>
           <p style={{ margin: '5px 0 0 0', color: '#7f8c8d' }}>Panel de control académico</p>
         </div>
-        <div style={{
-          padding: '8px 16px',
-          backgroundColor: '#e8f4f8',
-          borderRadius: '20px',
-          fontSize: '14px',
-          fontWeight: 'bold',
-          color: '#2980b9'
-        }}>
-          MODO MOCK
+        <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <nav style={{ display: 'flex', gap: '15px' }}>
+            <a href="/" style={{ color: '#2c3e50', textDecoration: 'none', fontWeight: 'bold' }}>Dashboard</a>
+            <a href="/students" style={{ color: '#7f8c8d', textDecoration: 'none' }}>Estudiantes</a>
+            <a href="/courses" style={{ color: '#7f8c8d', textDecoration: 'none' }}>Cursos</a>
+            <a href="/reports" style={{ color: '#7f8c8d', textDecoration: 'none' }}>Reportes</a>
+          </nav>
+          <div style={{
+            padding: '8px 16px',
+            backgroundColor: '#e8f4f8',
+            borderRadius: '20px',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            color: '#2980b9'
+          }}>
+            MODO MOCK
+          </div>
         </div>
       </div>
 
