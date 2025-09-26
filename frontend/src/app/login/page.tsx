@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useAuth } from '@/contexts/AuthContext'
 
 interface LoginFormData {
   email: string
@@ -24,6 +25,7 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
+  const { login } = useAuth()
 
   // Mock users para modo MOCK con contraseñas específicas
   const mockUsers: Record<string, { user: User, password: string }> = {
@@ -75,9 +77,8 @@ export default function LoginPage() {
         // Simular autenticación exitosa
         await new Promise(resolve => setTimeout(resolve, 1000))
         
-        // Guardar datos de usuario en localStorage
-        localStorage.setItem('user', JSON.stringify(userData.user))
-        localStorage.setItem('auth_mode', 'mock')
+        // Actualizar AuthContext PRIMERO (esto también guarda en localStorage)
+        login(userData.user)
         
         // Redirigir según rol
         redirectByRole(userData.user.role)
