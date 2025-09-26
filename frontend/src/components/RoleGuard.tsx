@@ -2,7 +2,7 @@
 
 import { useAuth } from '@/contexts/AuthContext'
 import { useRole } from '@/contexts/RoleContext'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { useEffect, ReactNode } from 'react'
 
 interface RoleGuardProps {
@@ -25,6 +25,7 @@ export function RoleGuard({
   const { isAuthenticated, isLoading } = useAuth()
   const { role, hasPermission } = useRole()
   const router = useRouter()
+  const pathname = usePathname()
 
   useEffect(() => {
     if (isLoading) return
@@ -44,7 +45,7 @@ export function RoleGuard({
       }
 
       const targetPath = roleBasedPaths[role as keyof typeof roleBasedPaths]
-      if (targetPath && router.pathname !== targetPath) {
+      if (targetPath && pathname !== targetPath) {
         router.push(targetPath)
         return
       }

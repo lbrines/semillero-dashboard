@@ -10,6 +10,8 @@ export default function CoordinatePage() {
   const { role, canSearchStudents, canViewAllReports } = useRole()
   const { stats, loading, error } = useCoordinatorStats()
 
+  console.log('CoordinatePage render - loading:', loading, 'error:', error, 'stats:', stats)
+
   if (loading) {
     return (
       <div style={{ 
@@ -370,10 +372,10 @@ export default function CoordinatePage() {
               </thead>
               <tbody>
                 <tr>
-                  <td style={{ padding: '12px', borderBottom: '1px solid #f0f0f0' }}>{stats?.studentProgress[0]?.name || 'Juan Pérez'}</td>
-                  <td style={{ padding: '12px', borderBottom: '1px solid #f0f0f0' }}>{stats?.studentProgress[0]?.course || 'Ecommerce 2024-1'}</td>
-                  <td style={{ padding: '12px', borderBottom: '1px solid #f0f0f0' }}>{stats?.studentProgress[0]?.completionRate || 80}%</td>
-                  <td style={{ padding: '12px', borderBottom: '1px solid #f0f0f0' }}>{stats?.studentProgress[0]?.averageGrade || 9.2}</td>
+                  <td style={{ padding: '12px', borderBottom: '1px solid #f0f0f0' }}>{stats?.studentProgress?.[0]?.name || 'Juan Pérez'}</td>
+                  <td style={{ padding: '12px', borderBottom: '1px solid #f0f0f0' }}>{stats?.studentProgress?.[0]?.course || 'Ecommerce 2024-1'}</td>
+                  <td style={{ padding: '12px', borderBottom: '1px solid #f0f0f0' }}>{stats?.studentProgress?.[0]?.completionRate || 80}%</td>
+                  <td style={{ padding: '12px', borderBottom: '1px solid #f0f0f0' }}>{stats?.studentProgress?.[0]?.averageGrade || 9.2}</td>
                   <td style={{ padding: '12px', borderBottom: '1px solid #f0f0f0' }}>
                     <span style={{ 
                       padding: '4px 8px', 

@@ -12,6 +12,7 @@ interface OverviewStats {
   totalSubmissions: number
   lateSubmissions: number
   averageCompletionTime: number
+  demo_mode?: string
 }
 
 export function useOverviewStats() {
@@ -45,7 +46,8 @@ export function useOverviewStats() {
           totalTeachers: 8,
           totalSubmissions: 156,
           lateSubmissions: 12,
-          averageCompletionTime: 2.5
+          averageCompletionTime: 2.5,
+          demo_mode: 'mock'
         })
       } finally {
         setLoading(false)

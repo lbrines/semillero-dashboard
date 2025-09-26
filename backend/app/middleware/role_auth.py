@@ -28,10 +28,10 @@ class RoleAuthMiddleware:
         if not whitelist_str:
             # Default mock whitelist for development
             return {
-                "estudiante": ["estudiante1@instituto.edu", "estudiante2@instituto.edu"],
-                "docente": ["profesor1@instituto.edu", "profesor2@instituto.edu"],
-                "coordinador": ["coord.ecommerce@instituto.edu", "coord.marketing@instituto.edu"],
-                "administrador": ["admin@instituto.edu"]
+                "student": ["student1@instituto.edu", "student2@instituto.edu"],
+                "teacher": ["teacher1@instituto.edu", "teacher2@instituto.edu"],
+                "coordinator": ["coord.ecommerce@instituto.edu", "coord.marketing@instituto.edu"],
+                "admin": ["admin@instituto.edu"]
             }
         
         # Parse whitelist from environment variable
@@ -95,8 +95,8 @@ class RoleAuthMiddleware:
                     # For now, return mock user
                     return {
                         "email": "admin@instituto.edu",
-                        "role": "administrador",
-                        "permissions": self._get_role_permissions("administrador")
+                        "role": "admin",
+                        "permissions": self._get_role_permissions("admin")
                     }
             
             return None
@@ -108,10 +108,10 @@ class RoleAuthMiddleware:
     def _get_role_permissions(self, role: str) -> List[str]:
         """Get permissions for a specific role"""
         permissions_map = {
-            "estudiante": ["VIEW_OWN_PROGRESS"],
-            "docente": ["VIEW_OWN_PROGRESS", "VIEW_COURSE_STUDENTS", "STUDENTS_SEARCH"],
-            "coordinador": ["VIEW_OWN_PROGRESS", "VIEW_COURSE_STUDENTS", "VIEW_COHORT_REPORTS", "STUDENTS_SEARCH"],
-            "administrador": ["VIEW_OWN_PROGRESS", "VIEW_COURSE_STUDENTS", "VIEW_COHORT_REPORTS", "VIEW_GLOBAL_REPORTS", "STUDENTS_SEARCH"]
+            "student": ["VIEW_OWN_PROGRESS"],
+            "teacher": ["VIEW_OWN_PROGRESS", "VIEW_COURSE_STUDENTS", "STUDENTS_SEARCH"],
+            "coordinator": ["VIEW_OWN_PROGRESS", "VIEW_COURSE_STUDENTS", "VIEW_COHORT_REPORTS", "STUDENTS_SEARCH"],
+            "admin": ["VIEW_OWN_PROGRESS", "VIEW_COURSE_STUDENTS", "VIEW_COHORT_REPORTS", "VIEW_GLOBAL_REPORTS", "STUDENTS_SEARCH"]
         }
         return permissions_map.get(role, [])
     

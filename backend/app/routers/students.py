@@ -63,6 +63,18 @@ async def get_all_students(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error fetching students: {str(e)}")
 
+@router.get("/students/stats")
+async def get_student_stats():
+    """Obtener estadísticas de un estudiante específico - DEPRECATED: Use /students/{id}/dashboard instead"""
+    return {
+        "myCourses": 2,
+        "completedSubmissions": 8,
+        "pendingSubmissions": 3,
+        "averageGrade": 8.5,
+        "completionRate": 75.0,
+        "lateSubmissions": 1
+    }
+
 @router.get("/students/{student_id}", response_model=Student)
 async def get_student(
     student_id: str,
@@ -182,19 +194,6 @@ async def get_student_dashboard(student_id: str):
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error generating student dashboard: {str(e)}")
-
-
-@router.get("/students/stats")
-async def get_student_stats():
-    """Obtener estadísticas de un estudiante específico - DEPRECATED: Use /students/{id}/dashboard instead"""
-    return {
-        "myCourses": 2,
-        "completedSubmissions": 8,
-        "pendingSubmissions": 3,
-        "averageGrade": 8.5,
-        "completionRate": 75.0,
-        "lateSubmissions": 1
-    }
 
 
 # LECCIÓN APRENDIDA: Endpoints anidados para relaciones

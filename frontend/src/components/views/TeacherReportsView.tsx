@@ -26,7 +26,7 @@ export function TeacherReportsView() {
             animation: 'spin 1s linear infinite',
             margin: '0 auto 20px'
           }}></div>
-          <p style={{ color: '#6c757d', margin: 0 }}>Cargando datos de tus clases...</p>
+          <p style={{ color: '#6c757d', margin: 0 }}>Cargando reportes de profesor...</p>
         </div>
       </div>
     )
@@ -51,35 +51,19 @@ export function TeacherReportsView() {
   return (
     <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif', maxWidth: '1200px', margin: '0 auto' }}>
       {/* Header */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
         marginBottom: '30px',
         paddingBottom: '20px',
         borderBottom: '2px solid #e0e0e0'
       }}>
         <div>
-          <h1 style={{ margin: '0 0 5px 0', color: '#2c3e50' }}>Mis Clases y Estudiantes</h1>
-          <p style={{ margin: 0, color: '#6c757d' }}>
-            Bienvenido/a {stats?.teacher_name || user?.name || 'Profesor/a'} 👨‍🏫
-          </p>
-          {stats?.demo_mode && (
-            <span style={{
-              backgroundColor: '#ffc107',
-              color: 'white',
-              padding: '4px 8px',
-              borderRadius: '4px',
-              fontSize: '12px',
-              fontWeight: 'bold',
-              marginTop: '5px',
-              display: 'inline-block'
-            }}>
-              MODO {stats.demo_mode.toUpperCase()}
-            </span>
-          )}
+          <h1 style={{ margin: '0 0 5px 0', color: '#2c3e50' }}>Reportes de Profesor</h1>
+          <p style={{ margin: 0, color: '#6c757d' }}>Bienvenido, {user?.name}</p>
         </div>
-        <button
+        <button 
           onClick={logout}
           style={{
             padding: '8px 16px',
@@ -95,69 +79,225 @@ export function TeacherReportsView() {
         </button>
       </div>
 
-      {/* Teacher Stats */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
-        gap: '20px',
-        marginBottom: '30px'
+      {/* KPIs */}
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+        gap: '20px', 
+        marginBottom: '30px' 
       }}>
-        <div style={{
-          backgroundColor: '#f8f9fa',
-          padding: '20px',
-          borderRadius: '8px',
+        <div style={{ 
+          backgroundColor: '#f8f9fa', 
+          padding: '20px', 
+          borderRadius: '8px', 
           textAlign: 'center',
           border: '1px solid #e9ecef'
         }}>
-          <h3 style={{ margin: '0 0 10px 0', color: '#495057' }}>Mis Clases</h3>
+          <h3 style={{ margin: '0 0 10px 0', color: '#495057' }}>Total Profesores</h3>
           <p style={{ margin: 0, fontSize: '24px', fontWeight: 'bold', color: '#007bff' }}>
-            {stats?.myClasses || 0}
+            {stats?.totalTeachers || 0}
           </p>
         </div>
-
-        <div style={{
-          backgroundColor: '#f8f9fa',
-          padding: '20px',
-          borderRadius: '8px',
+        <div style={{ 
+          backgroundColor: '#f8f9fa', 
+          padding: '20px', 
+          borderRadius: '8px', 
           textAlign: 'center',
           border: '1px solid #e9ecef'
         }}>
-          <h3 style={{ margin: '0 0 10px 0', color: '#495057' }}>Mis Estudiantes</h3>
+          <h3 style={{ margin: '0 0 10px 0', color: '#495057' }}>Profesores Activos</h3>
           <p style={{ margin: 0, fontSize: '24px', fontWeight: 'bold', color: '#28a745' }}>
-            {stats?.totalStudents || 0}
+            {stats?.activeTeachers || 0}
           </p>
         </div>
-
-        <div style={{
-          backgroundColor: '#f8f9fa',
-          padding: '20px',
-          borderRadius: '8px',
+        <div style={{ 
+          backgroundColor: '#f8f9fa', 
+          padding: '20px', 
+          borderRadius: '8px', 
           textAlign: 'center',
           border: '1px solid #e9ecef'
         }}>
-          <h3 style={{ margin: '0 0 10px 0', color: '#495057' }}>Pendiente Calificar</h3>
+          <h3 style={{ margin: '0 0 10px 0', color: '#495057' }}>Total Cursos</h3>
           <p style={{ margin: 0, fontSize: '24px', fontWeight: 'bold', color: '#ffc107' }}>
-            {stats?.pendingGrading || 0}
+            {stats?.totalCourses || 0}
           </p>
         </div>
-
-        <div style={{
-          backgroundColor: '#f8f9fa',
-          padding: '20px',
-          borderRadius: '8px',
+        <div style={{ 
+          backgroundColor: '#f8f9fa', 
+          padding: '20px', 
+          borderRadius: '8px', 
           textAlign: 'center',
           border: '1px solid #e9ecef'
         }}>
-          <h3 style={{ margin: '0 0 10px 0', color: '#495057' }}>Promedio de Clase</h3>
+          <h3 style={{ margin: '0 0 10px 0', color: '#495057' }}>Promedio de Estudiantes</h3>
           <p style={{ margin: 0, fontSize: '24px', fontWeight: 'bold', color: '#17a2b8' }}>
-            {stats?.averageClassGrade || 0}
+            {stats?.averageStudentsPerTeacher || 0}
           </p>
         </div>
       </div>
 
-      {/* Student Progress Table */}
+      {/* Mis Estudiantes */}
       <div style={{ marginBottom: '30px' }}>
-        <h2 style={{ color: '#2c3e50', marginBottom: '20px' }}>Progreso de Mis Estudiantes</h2>
+        <h2 style={{ color: '#2c3e50', marginBottom: '20px' }}>Mis Estudiantes</h2>
+        <div style={{ 
+          backgroundColor: '#fff', 
+          padding: '20px', 
+          borderRadius: '8px', 
+          border: '1px solid #e0e0e0',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+        }}>
+          <div style={{ overflowX: 'auto' }}>
+            <table style={{
+              width: '100%',
+              borderCollapse: 'collapse',
+              fontSize: '14px'
+            }}>
+              <thead>
+                <tr style={{ backgroundColor: '#f8f9fa' }}>
+                  <th style={{ padding: '12px', textAlign: 'left', borderBottom: '2px solid #e0e0e0' }}>
+                    Estudiante
+                  </th>
+                  <th style={{ padding: '12px', textAlign: 'center', borderBottom: '2px solid #e0e0e0' }}>
+                    Completitud
+                  </th>
+                  <th style={{ padding: '12px', textAlign: 'center', borderBottom: '2px solid #e0e0e0' }}>
+                    Promedio
+                  </th>
+                  <th style={{ padding: '12px', textAlign: 'center', borderBottom: '2px solid #e0e0e0' }}>
+                    Estado
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style={{ padding: '12px', fontWeight: 'bold' }}>
+                    Juan Pérez
+                  </td>
+                  <td style={{ padding: '12px', textAlign: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <div style={{
+                        backgroundColor: '#f8f9fa',
+                        borderRadius: '8px',
+                        width: '100px',
+                        height: '8px',
+                        marginRight: '10px'
+                      }}>
+                        <div style={{
+                          backgroundColor: '#28a745',
+                          height: '8px',
+                          borderRadius: '8px',
+                          width: '85%',
+                          transition: 'width 0.3s ease'
+                        }}></div>
+                      </div>
+                      <span style={{ fontSize: '12px' }}>85%</span>
+                    </div>
+                  </td>
+                  <td style={{ padding: '12px', textAlign: 'center', fontWeight: 'bold' }}>
+                    8.5
+                  </td>
+                  <td style={{ padding: '12px', textAlign: 'center' }}>
+                    <span style={{
+                      backgroundColor: '#d4edda',
+                      color: '#155724',
+                      padding: '4px 8px',
+                      borderRadius: '4px',
+                      fontSize: '12px',
+                      fontWeight: 'bold'
+                    }}>
+                      ✅ Buen Estado
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style={{ padding: '12px', fontWeight: 'bold' }}>
+                    María García
+                  </td>
+                  <td style={{ padding: '12px', textAlign: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <div style={{
+                        backgroundColor: '#f8f9fa',
+                        borderRadius: '8px',
+                        width: '100px',
+                        height: '8px',
+                        marginRight: '10px'
+                      }}>
+                        <div style={{
+                          backgroundColor: '#ffc107',
+                          height: '8px',
+                          borderRadius: '8px',
+                          width: '72%',
+                          transition: 'width 0.3s ease'
+                        }}></div>
+                      </div>
+                      <span style={{ fontSize: '12px' }}>72%</span>
+                    </div>
+                  </td>
+                  <td style={{ padding: '12px', textAlign: 'center', fontWeight: 'bold' }}>
+                    7.2
+                  </td>
+                  <td style={{ padding: '12px', textAlign: 'center' }}>
+                    <span style={{
+                      backgroundColor: '#d4edda',
+                      color: '#155724',
+                      padding: '4px 8px',
+                      borderRadius: '4px',
+                      fontSize: '12px',
+                      fontWeight: 'bold'
+                    }}>
+                      ✅ Buen Estado
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td style={{ padding: '12px', fontWeight: 'bold' }}>
+                    Carlos López
+                  </td>
+                  <td style={{ padding: '12px', textAlign: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <div style={{
+                        backgroundColor: '#f8f9fa',
+                        borderRadius: '8px',
+                        width: '100px',
+                        height: '8px',
+                        marginRight: '10px'
+                      }}>
+                        <div style={{
+                          backgroundColor: '#dc3545',
+                          height: '8px',
+                          borderRadius: '8px',
+                          width: '45%',
+                          transition: 'width 0.3s ease'
+                        }}></div>
+                      </div>
+                      <span style={{ fontSize: '12px' }}>45%</span>
+                    </div>
+                  </td>
+                  <td style={{ padding: '12px', textAlign: 'center', fontWeight: 'bold' }}>
+                    6.8
+                  </td>
+                  <td style={{ padding: '12px', textAlign: 'center' }}>
+                    <span style={{
+                      backgroundColor: '#f8d7da',
+                      color: '#721c24',
+                      padding: '4px 8px',
+                      borderRadius: '4px',
+                      fontSize: '12px',
+                      fontWeight: 'bold'
+                    }}>
+                      ⚠️ Requiere Atención
+                    </span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      {/* Fechas Límite */}
+      <div style={{ marginBottom: '30px' }}>
+        <h2 style={{ color: '#2c3e50', marginBottom: '20px' }}>Fechas Límite de Mis Clases</h2>
         <div style={{
           backgroundColor: '#fff',
           padding: '20px',
@@ -165,194 +305,165 @@ export function TeacherReportsView() {
           border: '1px solid #e0e0e0',
           boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
         }}>
-          {stats?.studentProgress && stats.studentProgress.length > 0 ? (
-            <div style={{ overflowX: 'auto' }}>
-              <table style={{
-                width: '100%',
-                borderCollapse: 'collapse',
-                fontSize: '14px'
-              }}>
-                <thead>
-                  <tr style={{ backgroundColor: '#f8f9fa' }}>
-                    <th style={{ padding: '12px', textAlign: 'left', borderBottom: '2px solid #e0e0e0' }}>
-                      Estudiante
-                    </th>
-                    <th style={{ padding: '12px', textAlign: 'center', borderBottom: '2px solid #e0e0e0' }}>
-                      Completitud
-                    </th>
-                    <th style={{ padding: '12px', textAlign: 'center', borderBottom: '2px solid #e0e0e0' }}>
-                      Promedio
-                    </th>
-                    <th style={{ padding: '12px', textAlign: 'center', borderBottom: '2px solid #e0e0e0' }}>
-                      Estado
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {stats.studentProgress.map((student, index) => (
-                    <tr key={index} style={{
-                      borderBottom: index < stats.studentProgress.length - 1 ? '1px solid #e0e0e0' : 'none'
-                    }}>
-                      <td style={{ padding: '12px', fontWeight: 'bold' }}>
-                        {student.student_name}
-                      </td>
-                      <td style={{ padding: '12px', textAlign: 'center' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                          <div style={{
-                            backgroundColor: '#f8f9fa',
-                            borderRadius: '8px',
-                            width: '100px',
-                            height: '8px',
-                            marginRight: '10px'
-                          }}>
-                            <div style={{
-                              backgroundColor: student.completion_rate >= 80 ? '#28a745' :
-                                             student.completion_rate >= 60 ? '#ffc107' : '#dc3545',
-                              height: '8px',
-                              borderRadius: '8px',
-                              width: `${student.completion_rate}%`,
-                              transition: 'width 0.3s ease'
-                            }}></div>
-                          </div>
-                          <span style={{ fontSize: '12px' }}>{student.completion_rate}%</span>
-                        </div>
-                      </td>
-                      <td style={{ padding: '12px', textAlign: 'center', fontWeight: 'bold' }}>
-                        {student.average_grade}
-                      </td>
-                      <td style={{ padding: '12px', textAlign: 'center' }}>
-                        <span style={{
-                          backgroundColor: student.status === 'En buen estado' ? '#d4edda' : '#f8d7da',
-                          color: student.status === 'En buen estado' ? '#155724' : '#721c24',
-                          padding: '4px 8px',
-                          borderRadius: '4px',
-                          fontSize: '12px',
-                          fontWeight: 'bold'
-                        }}>
-                          {student.status === 'En buen estado' ? '✅ Buen Estado' : '⚠️ Requiere Atención'}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <div style={{ textAlign: 'center', padding: '40px', color: '#6c757d' }}>
-              <p>No hay datos de estudiantes disponibles</p>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Upcoming Deadlines */}
-      {stats?.upcomingDeadlines && stats.upcomingDeadlines.length > 0 && (
-        <div style={{ marginBottom: '30px' }}>
-          <h2 style={{ color: '#2c3e50', marginBottom: '20px' }}>Fechas Límite de Mis Clases</h2>
           <div style={{
-            backgroundColor: '#fff',
-            padding: '20px',
-            borderRadius: '8px',
-            border: '1px solid #e0e0e0',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+            padding: '15px',
+            borderBottom: '1px solid #e0e0e0',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
           }}>
-            {stats.upcomingDeadlines.map((deadline, index) => (
-              <div key={index} style={{
-                padding: '15px',
-                borderBottom: index < stats.upcomingDeadlines.length - 1 ? '1px solid #e0e0e0' : 'none',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center'
+            <div>
+              <h4 style={{ margin: '0 0 5px 0', color: '#2c3e50' }}>
+                Proyecto Final - Ecommerce
+              </h4>
+              <p style={{ margin: 0, color: '#6c757d', fontSize: '14px' }}>
+                Especialista en Ecommerce
+              </p>
+            </div>
+            <div style={{ textAlign: 'right' }}>
+              <div style={{
+                backgroundColor: '#dc3545',
+                color: 'white',
+                padding: '4px 8px',
+                borderRadius: '4px',
+                fontSize: '12px',
+                fontWeight: 'bold',
+                marginBottom: '5px'
               }}>
-                <div>
-                  <h4 style={{ margin: '0 0 5px 0', color: '#2c3e50' }}>
-                    {deadline.assignment_title}
-                  </h4>
-                  <p style={{ margin: 0, color: '#6c757d', fontSize: '14px' }}>
-                    {deadline.course_name}
-                  </p>
-                </div>
-                <div style={{ textAlign: 'right' }}>
-                  <div style={{
-                    backgroundColor: deadline.days_remaining <= 2 ? '#dc3545' : '#007bff',
-                    color: 'white',
-                    padding: '4px 8px',
-                    borderRadius: '4px',
-                    fontSize: '12px',
-                    fontWeight: 'bold',
-                    marginBottom: '5px'
-                  }}>
-                    {deadline.days_remaining} días restantes
-                  </div>
-                  <p style={{ margin: 0, fontSize: '12px', color: '#6c757d' }}>
-                    {new Date(deadline.due_date).toLocaleDateString()}
-                  </p>
-                </div>
+                2 días restantes
               </div>
-            ))}
+              <p style={{ margin: 0, fontSize: '12px', color: '#6c757d' }}>
+                2024-01-28
+              </p>
+            </div>
+          </div>
+          <div style={{
+            padding: '15px',
+            borderBottom: '1px solid #e0e0e0',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
+            <div>
+              <h4 style={{ margin: '0 0 5px 0', color: '#2c3e50' }}>
+                Análisis de Competencia
+              </h4>
+              <p style={{ margin: 0, color: '#6c757d', fontSize: '14px' }}>
+                Especialista en Marketing Digital
+              </p>
+            </div>
+            <div style={{ textAlign: 'right' }}>
+              <div style={{
+                backgroundColor: '#007bff',
+                color: 'white',
+                padding: '4px 8px',
+                borderRadius: '4px',
+                fontSize: '12px',
+                fontWeight: 'bold',
+                marginBottom: '5px'
+              }}>
+                5 días restantes
+              </div>
+              <p style={{ margin: 0, fontSize: '12px', color: '#6c757d' }}>
+                2024-01-31
+              </p>
+            </div>
+          </div>
+          <div style={{
+            padding: '15px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center'
+          }}>
+            <div>
+              <h4 style={{ margin: '0 0 5px 0', color: '#2c3e50' }}>
+                Estrategia de Precios
+              </h4>
+              <p style={{ margin: 0, color: '#6c757d', fontSize: '14px' }}>
+                Especialista en Ecommerce
+              </p>
+            </div>
+            <div style={{ textAlign: 'right' }}>
+              <div style={{
+                backgroundColor: '#28a745',
+                color: 'white',
+                padding: '4px 8px',
+                borderRadius: '4px',
+                fontSize: '12px',
+                fontWeight: 'bold',
+                marginBottom: '5px'
+              }}>
+                7 días restantes
+              </div>
+              <p style={{ margin: 0, fontSize: '12px', color: '#6c757d' }}>
+                2024-02-02
+              </p>
+            </div>
           </div>
         </div>
-      )}
-
-      {/* Quick Actions */}
-      <div style={{ marginBottom: '30px' }}>
-        <h2 style={{ color: '#2c3e50', marginBottom: '20px' }}>Acciones Rápidas</h2>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-          gap: '15px'
-        }}>
-          <button style={{
-            backgroundColor: '#007bff',
-            color: 'white',
-            padding: '15px',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            fontSize: '14px',
-            fontWeight: 'bold'
-          }}>
-            📝 Calificar Entregas ({stats?.pendingGrading || 0})
-          </button>
-          <button style={{
-            backgroundColor: '#28a745',
-            color: 'white',
-            padding: '15px',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            fontSize: '14px',
-            fontWeight: 'bold'
-          }}>
-            👥 Ver Mis Estudiantes ({stats?.totalStudents || 0})
-          </button>
-          <button style={{
-            backgroundColor: '#17a2b8',
-            color: 'white',
-            padding: '15px',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            fontSize: '14px',
-            fontWeight: 'bold'
-          }}>
-            📊 Exportar Reportes
-          </button>
-        </div>
       </div>
 
-      {/* Access Notice */}
-      <div style={{
-        marginTop: '30px',
-        padding: '15px',
-        backgroundColor: '#fff3cd',
-        borderRadius: '8px',
-        border: '1px solid #ffc107'
-      }}>
-        <p style={{ margin: 0, fontSize: '14px', color: '#856404' }}>
-          👨‍🏫 <strong>Acceso Limitado:</strong> Solo puedes ver el progreso de los estudiantes
-          en tus clases asignadas. Para acceder a datos globales, contacta al coordinador académico.
-        </p>
+      {/* Acciones Rápidas */}
+      <div>
+        <h2 style={{ color: '#2c3e50', marginBottom: '20px' }}>Acciones Rápidas</h2>
+        <div style={{ 
+          display: 'grid', 
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+          gap: '20px' 
+        }}>
+          <button style={{
+            padding: '20px',
+            backgroundColor: '#007bff',
+            color: 'white',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '16px',
+            fontWeight: 'bold',
+            textAlign: 'center'
+          }}>
+            Ver Todos los Estudiantes
+          </button>
+          <button style={{
+            padding: '20px',
+            backgroundColor: '#28a745',
+            color: 'white',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '16px',
+            fontWeight: 'bold',
+            textAlign: 'center'
+          }}>
+            Crear Nueva Tarea
+          </button>
+          <button style={{
+            padding: '20px',
+            backgroundColor: '#ffc107',
+            color: '#212529',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '16px',
+            fontWeight: 'bold',
+            textAlign: 'center'
+          }}>
+            Calificar Entregas
+          </button>
+          <button style={{
+            padding: '20px',
+            backgroundColor: '#17a2b8',
+            color: 'white',
+            border: 'none',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            fontSize: '16px',
+            fontWeight: 'bold',
+            textAlign: 'center'
+          }}>
+            Generar Reporte
+          </button>
+        </div>
       </div>
     </div>
   )

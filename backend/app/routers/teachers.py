@@ -21,6 +21,18 @@ class TeacherCoursesResponse(BaseModel):
     email: str
     courses: List[dict]
 
+@router.get("/teachers/stats")
+async def get_teachers_stats():
+    """Obtener estadísticas generales de profesores"""
+    return {
+        "totalTeachers": 8,
+        "activeTeachers": 6,
+        "totalCourses": 12,
+        "averageStudentsPerTeacher": 25,
+        "pendingGrading": 45,
+        "averageGrade": 8.2
+    }
+
 @router.post("/teachers/identify", response_model=TeacherAuthResponse)
 async def identify_teacher(
     request: TeacherAuthRequest,
@@ -158,6 +170,54 @@ async def get_teacher_dashboard(teacher_id: str):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error generating teacher dashboard: {str(e)}")
 
+@router.get("/teachers/{teacher_id}")
+async def get_teacher_by_id(teacher_id: str):
+    """Obtener información específica de un profesor por ID"""
+    try:
+        # Mock data para profesores
+        teachers_data = {
+            "teacher_1": {
+                "teacher_id": "teacher_1",
+                "name": "Dr. María González",
+                "email": "profesor1@instituto.edu",
+                "role": "coordinador",
+                "courses": ["ecommerce_001", "marketing_001"],
+                "active": True
+            },
+            "teacher_2": {
+                "teacher_id": "teacher_2",
+                "name": "Prof. Carlos Rodríguez",
+                "email": "profesor2@instituto.edu",
+                "role": "docente",
+                "courses": ["ecommerce_001"],
+                "active": True
+            },
+            "admin_1": {
+                "teacher_id": "admin_1",
+                "name": "Administrador Sistema",
+                "email": "admin@instituto.edu",
+                "role": "administrador",
+                "courses": ["ecommerce_001", "marketing_001"],
+                "active": True
+            },
+            "coord_1": {
+                "teacher_id": "coord_1",
+                "name": "Coordinador Académico",
+                "email": "coord@instituto.edu",
+                "role": "coordinador",
+                "courses": ["ecommerce_001", "marketing_001"],
+                "active": True
+            }
+        }
+        
+        if teacher_id not in teachers_data:
+            raise HTTPException(status_code=404, detail="Teacher not found")
+        
+        return teachers_data[teacher_id]
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error fetching teacher: {str(e)}")
 
 @router.get("/teachers/{email}/courses-google")
 async def get_teacher_courses_google(

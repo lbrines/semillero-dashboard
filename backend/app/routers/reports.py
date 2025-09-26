@@ -10,7 +10,7 @@ import logging
 
 from ..models.reports import (
     ReportCohortProgressResponse, RoleAuthResponse, KPIResponse,
-    CoordinatorDashboard, AdminDashboard
+    CoordinatorDashboard, AdminDashboard, OverviewStats
 )
 from ..services.reports_service import reports_service
 from ..middleware.role_auth import role_auth
@@ -33,6 +33,35 @@ async def reports_health():
             detail="Reports service health check failed"
         )
 
+@router.get("/stats")
+async def get_reports_stats():
+    """Obtener estadísticas globales del sistema"""
+    return {
+        "totalStudents": 150,
+        "totalCourses": 12,
+        "totalSubmissions": 450,
+        "lateSubmissions": 45,
+        "averageCompletionRate": 78.5,
+        "systemHealth": "healthy",
+        "totalTeachers": 8,
+        "activeCourses": 10,
+        "pendingGrading": 45,
+        "averageGrade": 8.2
+    }
+
+@router.get("/overview", response_model=OverviewStats)
+async def get_overview_stats():
+    """Obtener estadísticas generales del sistema para overview"""
+    try:
+        overview_stats = reports_service.get_overview_stats()
+        logger.info("Generated overview stats successfully")
+        return overview_stats
+    except Exception as e:
+        logger.error(f"Error generating overview stats: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Failed to generate overview statistics"
+        )
 
 @router.get("/cohort-progress", response_model=ReportCohortProgressResponse)
 async def get_cohort_progress(

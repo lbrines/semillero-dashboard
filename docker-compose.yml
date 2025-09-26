@@ -10,6 +10,9 @@ services:
     environment:
       - DATA_DRIVER=mock
       - FRONTEND_URL=http://localhost:3000
+      - ROLES_WHITELIST=coord.ecommerce@instituto.edu,coord.marketing@instituto.edu,admin@instituto.edu,teacher@instituto.edu,student@instituto.edu
+      - DEMO_MODE=mock
+      - JWT_TOKEN=test_jwt_token
     volumes:
       - ./backend:/app
     networks:
@@ -31,6 +34,7 @@ services:
       - NEXT_PUBLIC_API_URL=http://backend:8000/api/v1
       - NEXT_PUBLIC_BACKEND_URL=http://backend:8000
       - NEXT_PUBLIC_DEMO_MODE=mock
+      - NEXT_PUBLIC_ROLES_WHITELIST=coord.ecommerce@instituto.edu,coord.marketing@instituto.edu,admin@instituto.edu,teacher@instituto.edu,student@instituto.edu
     # volumes:
       # - ./frontend:/app
       # - /app/node_modules

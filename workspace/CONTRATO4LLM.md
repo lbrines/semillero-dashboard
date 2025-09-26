@@ -933,3 +933,43 @@ chore(monitoring): add comprehensive monitoring and alerting
 
 Nerdearla Vibeathon - 2025
 ```
+
+## LECCIONES APRENDIDAS
+
+### FastAPI - Orden de Rutas y Enrutamiento
+
+#### **Problema Identificado**
+Error 404 en endpoint `/students/stats` debido a conflicto de rutas con `/students/{student_id}`.
+
+#### **Causa Raíz**
+FastAPI usa **algoritmo de coincidencia secuencial** que evalúa rutas en orden de definición. La ruta `/students/{student_id}` capturaba "stats" como parámetro `student_id`.
+
+#### **Solución Aplicada**
+Reordenar rutas siguiendo el **principio de especificidad**:
+
+```python
+# ✅ CORRECTO: Específico → General
+@router.get("/students/stats")         # Específico (se evalúa primero)
+@router.get("/students/{student_id}")  # General (comodín, se evalúa después)
+
+# ❌ INCORRECTO: General → Específico  
+@router.get("/students/{student_id}")  # General (captura todo, incluyendo "stats")
+@router.get("/students/stats")         # Nunca se ejecuta
+```
+
+#### **Regla de Oro**
+**Siempre definir rutas más específicas antes que las más generales** para evitar que patrones comodín capturen rutas específicas.
+
+#### **Validación**
+- ✅ `/students/stats` → Funciona correctamente
+- ✅ `/students/student_1` → Sigue funcionando  
+- ✅ `/students/abc123` → Sigue funcionando
+
+#### **Aplicación Futura**
+Aplicar este principio en todos los routers de FastAPI para evitar conflictos de enrutamiento similares.
+
+---
+
+**Fecha**: 2025-09-26  
+**Contexto**: Resolución de error 404 en endpoint de estadísticas de estudiantes  
+**Impacto**: Crítico para funcionamiento correcto de APIs REST

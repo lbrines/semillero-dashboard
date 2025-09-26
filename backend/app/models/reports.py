@@ -145,6 +145,14 @@ class TeacherDashboard(BaseModel):
     demo_mode: str = Field(..., description="Current demo mode (mock or google)")
 
 
+class StudentProgress(BaseModel):
+    """Model for student progress in coordinator dashboard"""
+    name: str = Field(..., description="Student name")
+    course: str = Field(..., description="Course name")
+    completionRate: int = Field(..., description="Completion rate percentage")
+    averageGrade: float = Field(..., description="Average grade")
+    status: str = Field(..., description="Student status")
+
 class CoordinatorDashboard(BaseModel):
     """Model for coordinator dashboard response"""
     coordinator_id: str = Field(..., description="Coordinator identifier")
@@ -154,6 +162,11 @@ class CoordinatorDashboard(BaseModel):
     totalTeachers: int = Field(..., description="Total teachers managed")
     averageCohortProgress: float = Field(..., description="Average progress across all cohorts")
     cohortsAtRisk: int = Field(..., description="Number of cohorts requiring attention")
+    completionRate: float = Field(..., description="Overall completion rate")
+    punctualityRate: float = Field(..., description="Overall punctuality rate")
+    studentsAtRisk: int = Field(..., description="Number of students at risk")
+    averageGrade: float = Field(..., description="Average grade across all students")
+    studentProgress: List[StudentProgress] = Field(..., description="List of student progress data")
     upcomingMilestones: List[dict] = Field(..., description="List of upcoming milestones")
     demo_mode: str = Field(..., description="Current demo mode (mock or google)")
 
@@ -169,3 +182,18 @@ class AdminDashboard(BaseModel):
     systemHealth: dict = Field(..., description="System health metrics")
     recentAlerts: List[dict] = Field(..., description="Recent system alerts")
     demo_mode: str = Field(..., description="Current demo mode (mock or google)")
+
+
+class OverviewStats(BaseModel):
+    """Model for overview statistics"""
+    retentionRate: float = Field(..., description="Student retention rate percentage")
+    completionRate: float = Field(..., description="Course completion rate percentage")
+    averageGrade: float = Field(..., description="Average grade across all courses")
+    studentsAtRisk: int = Field(..., description="Number of students at risk")
+    totalActiveCourses: int = Field(..., description="Total number of active courses")
+    totalStudents: int = Field(..., description="Total number of students")
+    totalTeachers: int = Field(..., description="Total number of teachers")
+    totalSubmissions: int = Field(..., description="Total number of submissions")
+    lateSubmissions: int = Field(..., description="Number of late submissions")
+    averageCompletionTime: float = Field(..., description="Average completion time in days")
+    demo_mode: Optional[str] = Field(None, description="Current demo mode (mock or google)")

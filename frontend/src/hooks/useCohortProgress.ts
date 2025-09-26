@@ -51,6 +51,7 @@ export interface CohortProgressResponse {
     bestPerformingCohort: string;
     worstPerformingCohort: string;
   };
+  demo_mode?: string;
 }
 
 export function useCohortProgress() {
@@ -115,7 +116,8 @@ export function useCohortProgress() {
           overallOnTimePercentage: 58.3,
           bestPerformingCohort: 'Ecommerce 2024-1',
           worstPerformingCohort: 'Marketing 2024-1'
-        }
+        },
+        demo_mode: 'mock'
       });
     } finally {
       setLoading(false);

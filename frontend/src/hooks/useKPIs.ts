@@ -14,7 +14,7 @@ interface KPIs {
   pendingAssignments: number
   onTimeSubmissions: number
   onTimePercentage: number
-  demo_mode: string
+  demo_mode?: string
   is_google_data: boolean
 }
 

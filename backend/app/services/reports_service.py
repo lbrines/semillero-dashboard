@@ -9,7 +9,8 @@ import os
 from ..models.reports import (
     ReportCohortProgress, CourseProgress, ReportCohortProgressResponse, KPIResponse,
     StudentDashboard, TeacherDashboard, CoordinatorDashboard, AdminDashboard,
-    UpcomingDeadline, RecentActivity, ChartDataPoint, TrendsData
+    UpcomingDeadline, RecentActivity, ChartDataPoint, TrendsData, OverviewStats,
+    StudentProgress
 )
 import logging
 
@@ -502,6 +503,38 @@ class ReportsService:
             average_cohort_progress = sum(all_completion_rates) / len(all_completion_rates) if all_completion_rates else 0
             cohorts_at_risk = len([rate for rate in all_completion_rates if rate < 50])
 
+            # Calculate additional metrics
+            completion_rate = round(average_cohort_progress, 1)
+            punctuality_rate = 85.0  # Mock punctuality rate
+            students_at_risk = len([rate for rate in all_completion_rates if rate < 60])
+            average_grade = 8.4  # Mock average grade
+
+            # Generate student progress data
+            student_progress = []
+            for student in self.mock_data["students"]:
+                student_submissions = [s for s in self.mock_data["submissions"] if s.get("user_id") == student.get("user_id")]
+                completion_rate_student = min(100, (len(student_submissions) / 3 * 100))
+                
+                # Get course name
+                course_id = student.get("course_id", "unknown")
+                course_name = "Ecommerce 2024-1" if "ecommerce" in course_id.lower() else "Marketing 2024-1"
+                
+                # Determine status
+                if completion_rate_student >= 80:
+                    status = "excellent"
+                elif completion_rate_student >= 60:
+                    status = "on-track"
+                else:
+                    status = "at-risk"
+                
+                student_progress.append(StudentProgress(
+                    name=student.get("profile", {}).get("name", {}).get("full_name", "Estudiante"),
+                    course=course_name,
+                    completionRate=int(completion_rate_student),
+                    averageGrade=round(8.0 + (completion_rate_student / 100) * 2, 1),  # Mock grade calculation
+                    status=status
+                ))
+
             # Mock upcoming milestones
             upcoming_milestones = [
                 {"milestone": "Fin Módulo 1", "date": "2024-02-15", "courses_affected": 2},
@@ -516,6 +549,11 @@ class ReportsService:
                 totalTeachers=total_teachers,
                 averageCohortProgress=round(average_cohort_progress, 1),
                 cohortsAtRisk=cohorts_at_risk,
+                completionRate=completion_rate,
+                punctualityRate=punctuality_rate,
+                studentsAtRisk=students_at_risk,
+                averageGrade=average_grade,
+                studentProgress=student_progress,
                 upcomingMilestones=upcoming_milestones,
                 demo_mode=self.demo_mode
             )
@@ -574,6 +612,64 @@ class ReportsService:
             "total_courses": len(self.mock_data["courses"]),
             "total_submissions": len(self.mock_data["submissions"])
         }
+
+    def get_overview_stats(self) -> 'OverviewStats':
+        """Get overview statistics for the system"""
+        try:
+            # Calculate overview statistics from mock data
+            total_students = len(self.mock_data.get("students", []))
+            total_courses = len(self.mock_data.get("courses", []))
+            total_submissions = len(self.mock_data.get("submissions", []))
+            
+            # Calculate late submissions
+            late_submissions = sum(1 for sub in self.mock_data.get("submissions", []) 
+                                 if sub.get("late", False))
+            
+            # Calculate completion rate (mock calculation)
+            completion_rate = 78.5 if total_students > 0 else 0.0
+            
+            # Calculate retention rate (mock calculation)
+            retention_rate = 92.0 if total_students > 0 else 0.0
+            
+            # Calculate average grade (mock calculation)
+            average_grade = 8.3 if total_students > 0 else 0.0
+            
+            # Calculate students at risk (mock calculation)
+            students_at_risk = max(0, total_students // 10)  # 10% of students at risk
+            
+            # Calculate average completion time (mock calculation)
+            average_completion_time = 2.5
+            
+            return OverviewStats(
+                retentionRate=retention_rate,
+                completionRate=completion_rate,
+                averageGrade=average_grade,
+                studentsAtRisk=students_at_risk,
+                totalActiveCourses=total_courses,
+                totalStudents=total_students,
+                totalTeachers=8,  # Mock value
+                totalSubmissions=total_submissions,
+                lateSubmissions=late_submissions,
+                averageCompletionTime=average_completion_time,
+                demo_mode=self.demo_mode
+            )
+            
+        except Exception as e:
+            logger.error(f"Error calculating overview stats: {e}")
+            # Return default values
+            return OverviewStats(
+                retentionRate=0.0,
+                completionRate=0.0,
+                averageGrade=0.0,
+                studentsAtRisk=0,
+                totalActiveCourses=0,
+                totalStudents=0,
+                totalTeachers=0,
+                totalSubmissions=0,
+                lateSubmissions=0,
+                averageCompletionTime=0.0,
+                demo_mode=self.demo_mode
+            )
 
 
 # Global instance

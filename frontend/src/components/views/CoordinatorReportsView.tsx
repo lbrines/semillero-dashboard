@@ -60,13 +60,32 @@ export function CoordinatorReportsView() {
         alignItems: 'center',
         marginBottom: '30px',
         paddingBottom: '20px',
-        borderBottom: '2px solid #e0e0e0'
+        borderBottom: '2px solid #e9ecef'
       }}>
         <div>
-          <h1 style={{ margin: '0 0 5px 0', color: '#2c3e50' }}>Reportes de Coordinación</h1>
-          <p style={{ margin: 0, color: '#6c757d' }}>
-            {stats?.coordinator_name || user?.name || 'Coordinador/a'} - Vista Global de Cohortes 📊
+          <h1 style={{ 
+            margin: 0, 
+            color: '#2c3e50', 
+            fontSize: '28px',
+            fontWeight: 'bold'
+          }}>
+            Reportes de Coordinación
+          </h1>
+          <p style={{ 
+            margin: '5px 0 0 0', 
+            color: '#6c757d', 
+            fontSize: '16px' 
+          }}>
+            Análisis global del rendimiento académico
           </p>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+          <span style={{ 
+            color: '#6c757d', 
+            fontSize: '14px' 
+          }}>
+            {user?.name || 'Usuario'}
+          </span>
           {stats?.demo_mode && (
             <span style={{
               backgroundColor: '#ffc107',
@@ -74,34 +93,32 @@ export function CoordinatorReportsView() {
               padding: '4px 8px',
               borderRadius: '4px',
               fontSize: '12px',
-              fontWeight: 'bold',
-              marginTop: '5px',
-              display: 'inline-block'
+              fontWeight: 'bold'
             }}>
               MODO {stats.demo_mode.toUpperCase()}
             </span>
           )}
+          <button
+            onClick={logout}
+            style={{
+              padding: '8px 16px',
+              backgroundColor: '#dc3545',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              cursor: 'pointer',
+              fontSize: '14px'
+            }}
+          >
+            Cerrar Sesión
+          </button>
         </div>
-        <button
-          onClick={logout}
-          style={{
-            padding: '8px 16px',
-            backgroundColor: '#dc3545',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontSize: '14px'
-          }}
-        >
-          Cerrar Sesión
-        </button>
       </div>
 
-      {/* Global KPIs */}
+      {/* KPIs Grid */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
         gap: '20px',
         marginBottom: '30px'
       }}>
@@ -109,277 +126,249 @@ export function CoordinatorReportsView() {
           backgroundColor: '#f8f9fa',
           padding: '20px',
           borderRadius: '8px',
-          textAlign: 'center',
-          border: '1px solid #e9ecef'
+          border: '1px solid #e9ecef',
+          textAlign: 'center'
         }}>
-          <h3 style={{ margin: '0 0 10px 0', color: '#495057' }}>Total Cohortes</h3>
-          <p style={{ margin: 0, fontSize: '24px', fontWeight: 'bold', color: '#007bff' }}>
-            {stats?.totalCohorts || 0}
-          </p>
-        </div>
-
-        <div style={{
-          backgroundColor: '#f8f9fa',
-          padding: '20px',
-          borderRadius: '8px',
-          textAlign: 'center',
-          border: '1px solid #e9ecef'
-        }}>
-          <h3 style={{ margin: '0 0 10px 0', color: '#495057' }}>Total Estudiantes</h3>
-          <p style={{ margin: 0, fontSize: '24px', fontWeight: 'bold', color: '#28a745' }}>
-            {stats?.totalStudents || 0}
-          </p>
-        </div>
-
-        <div style={{
-          backgroundColor: '#f8f9fa',
-          padding: '20px',
-          borderRadius: '8px',
-          textAlign: 'center',
-          border: '1px solid #e9ecef'
-        }}>
-          <h3 style={{ margin: '0 0 10px 0', color: '#495057' }}>Total Profesores</h3>
-          <p style={{ margin: 0, fontSize: '24px', fontWeight: 'bold', color: '#17a2b8' }}>
-            {stats?.totalTeachers || 0}
-          </p>
-        </div>
-
-        <div style={{
-          backgroundColor: stats?.cohortsAtRisk && stats.cohortsAtRisk > 0 ? '#f8d7da' : '#d4edda',
-          padding: '20px',
-          borderRadius: '8px',
-          textAlign: 'center',
-          border: `1px solid ${stats?.cohortsAtRisk && stats.cohortsAtRisk > 0 ? '#dc3545' : '#28a745'}`
-        }}>
-          <h3 style={{ margin: '0 0 10px 0', color: '#495057' }}>Cohortes en Riesgo</h3>
-          <p style={{
-            margin: 0,
-            fontSize: '24px',
-            fontWeight: 'bold',
-            color: stats?.cohortsAtRisk && stats.cohortsAtRisk > 0 ? '#dc3545' : '#28a745'
+          <h3 style={{ 
+            margin: '0 0 10px 0', 
+            color: '#2c3e50', 
+            fontSize: '18px' 
           }}>
-            {stats?.cohortsAtRisk || 0}
-          </p>
+            Tasa de Completitud
+          </h3>
+          <div style={{ 
+            fontSize: '32px', 
+            fontWeight: 'bold', 
+            color: '#28a745' 
+          }}>
+            {stats?.completionRate || 0}%
+          </div>
+        </div>
+
+        <div style={{
+          backgroundColor: '#f8f9fa',
+          padding: '20px',
+          borderRadius: '8px',
+          border: '1px solid #e9ecef',
+          textAlign: 'center'
+        }}>
+          <h3 style={{ 
+            margin: '0 0 10px 0', 
+            color: '#2c3e50', 
+            fontSize: '18px' 
+          }}>
+            Tasa de Puntualidad
+          </h3>
+          <div style={{ 
+            fontSize: '32px', 
+            fontWeight: 'bold', 
+            color: '#17a2b8' 
+          }}>
+            {stats?.punctualityRate || 0}%
+          </div>
+        </div>
+
+        <div style={{
+          backgroundColor: '#f8f9fa',
+          padding: '20px',
+          borderRadius: '8px',
+          border: '1px solid #e9ecef',
+          textAlign: 'center'
+        }}>
+          <h3 style={{ 
+            margin: '0 0 10px 0', 
+            color: '#2c3e50', 
+            fontSize: '18px' 
+          }}>
+            Total Estudiantes
+          </h3>
+          <div style={{ 
+            fontSize: '32px', 
+            fontWeight: 'bold', 
+            color: '#6f42c1' 
+          }}>
+            {stats?.totalStudents || 0}
+          </div>
+        </div>
+
+        <div style={{
+          backgroundColor: '#f8f9fa',
+          padding: '20px',
+          borderRadius: '8px',
+          border: '1px solid #e9ecef',
+          textAlign: 'center'
+        }}>
+          <h3 style={{ 
+            margin: '0 0 10px 0', 
+            color: '#2c3e50', 
+            fontSize: '18px' 
+          }}>
+            Estudiantes en Riesgo
+          </h3>
+          <div style={{ 
+            fontSize: '32px', 
+            fontWeight: 'bold', 
+            color: '#dc3545' 
+          }}>
+            {stats?.studentsAtRisk || 0}
+          </div>
         </div>
       </div>
 
-      {/* Progress Overview */}
+      {/* Progress Chart */}
       <div style={{
-        backgroundColor: '#fff',
+        backgroundColor: '#f8f9fa',
         padding: '20px',
         borderRadius: '8px',
-        border: '1px solid #e0e0e0',
-        boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+        border: '1px solid #e9ecef',
         marginBottom: '30px'
       }}>
-        <h2 style={{ margin: '0 0 20px 0', color: '#2c3e50' }}>Progreso General de Cohortes</h2>
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          marginBottom: '15px'
+        <h3 style={{ 
+          margin: '0 0 20px 0', 
+          color: '#2c3e50', 
+          fontSize: '20px' 
         }}>
-          <span style={{ fontSize: '18px', fontWeight: 'bold', marginRight: '15px' }}>
-            Progreso Promedio:
-          </span>
-          <div style={{
-            backgroundColor: '#f8f9fa',
-            borderRadius: '8px',
-            padding: '8px',
-            flex: 1,
-            maxWidth: '300px'
-          }}>
-            <div style={{
-              backgroundColor: '#28a745',
-              height: '20px',
-              borderRadius: '10px',
-              width: `${stats?.averageCohortProgress || 0}%`,
-              transition: 'width 0.3s ease'
-            }}></div>
+          Progreso de Cohorte
+        </h3>
+        {cohortLoading ? (
+          <div style={{ textAlign: 'center', padding: '40px' }}>
+            <p style={{ color: '#6c757d' }}>Cargando datos de progreso...</p>
           </div>
-          <span style={{
-            fontSize: '18px',
-            fontWeight: 'bold',
-            marginLeft: '15px',
-            color: '#28a745'
-          }}>
-            {stats?.averageCohortProgress || 0}%
-          </span>
-        </div>
-        <p style={{ margin: 0, color: '#6c757d', fontSize: '14px' }}>
-          Promedio de completitud de entregas across todas las cohortes
-        </p>
+        ) : cohortError ? (
+          <div style={{ textAlign: 'center', padding: '40px' }}>
+            <p style={{ color: '#dc3545' }}>Error al cargar datos de progreso</p>
+          </div>
+        ) : (
+          <CohortProgressChart data={cohortData?.chartData || []} />
+        )}
       </div>
 
-      {/* Cohort Progress Chart */}
-      <div style={{ marginBottom: '30px' }}>
-        <h2 style={{ color: '#2c3e50', marginBottom: '20px' }}>Comparación entre Cohortes</h2>
-        <CohortProgressChart
-          data={cohortData?.chartData || []}
-          loading={cohortLoading}
-          error={cohortError}
-        />
-      </div>
-
-      {/* Summary Stats from Chart Data */}
-      {cohortData?.summary && !cohortLoading && (
-        <div style={{
-          backgroundColor: '#fff',
-          padding: '20px',
-          borderRadius: '8px',
-          border: '1px solid #e0e0e0',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-          marginBottom: '30px'
+      {/* Student Progress Table */}
+      <div style={{
+        backgroundColor: '#f8f9fa',
+        padding: '20px',
+        borderRadius: '8px',
+        border: '1px solid #e9ecef'
+      }}>
+        <h3 style={{ 
+          margin: '0 0 20px 0', 
+          color: '#2c3e50', 
+          fontSize: '20px' 
         }}>
-          <h3 style={{ margin: '0 0 15px 0', color: '#2c3e50' }}>Métricas Globales</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '15px' }}>
-            <div>
-              <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#007bff' }}>
-                {cohortData.summary.totalSubmissions}
-              </div>
-              <div style={{ fontSize: '14px', color: '#6c757d' }}>Total de Entregas</div>
-            </div>
-            <div>
-              <div style={{ fontSize: '24px', fontWeight: 'bold', color: '#28a745' }}>
-                {cohortData.summary.overallOnTimePercentage.toFixed(1)}%
-              </div>
-              <div style={{ fontSize: '14px', color: '#6c757d' }}>Entregas a Tiempo</div>
-            </div>
-            <div>
-              <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#28a745' }}>
-                {cohortData.summary.bestPerformingCohort.replace('Cohorte ', '')}
-              </div>
-              <div style={{ fontSize: '14px', color: '#6c757d' }}>Mejor Cohorte</div>
-            </div>
-            <div>
-              <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#dc3545' }}>
-                {cohortData.summary.worstPerformingCohort.replace('Cohorte ', '')}
-              </div>
-              <div style={{ fontSize: '14px', color: '#6c757d' }}>Requiere Atención</div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Upcoming Milestones */}
-      {stats?.upcomingMilestones && stats.upcomingMilestones.length > 0 && (
-        <div style={{ marginBottom: '30px' }}>
-          <h2 style={{ color: '#2c3e50', marginBottom: '20px' }}>Próximos Hitos Académicos</h2>
-          <div style={{
-            backgroundColor: '#fff',
-            padding: '20px',
-            borderRadius: '8px',
-            border: '1px solid #e0e0e0',
-            boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+          Progreso de Estudiantes
+        </h3>
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{
+            width: '100%',
+            borderCollapse: 'collapse',
+            backgroundColor: 'white',
+            borderRadius: '4px',
+            overflow: 'hidden'
           }}>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-              gap: '15px'
-            }}>
-              {stats.upcomingMilestones.map((milestone, index) => (
-                <div key={index} style={{
-                  padding: '15px',
-                  border: '1px solid #e0e0e0',
-                  borderRadius: '8px',
-                  backgroundColor: '#f8f9fa'
+            <thead>
+              <tr style={{ backgroundColor: '#e9ecef' }}>
+                <th style={{ 
+                  padding: '12px', 
+                  textAlign: 'left', 
+                  borderBottom: '1px solid #dee2e6',
+                  fontWeight: 'bold',
+                  color: '#2c3e50'
                 }}>
-                  <h4 style={{ margin: '0 0 10px 0', color: '#2c3e50' }}>
-                    🎯 {milestone.milestone}
-                  </h4>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ color: '#6c757d', fontSize: '14px' }}>
-                      📅 {new Date(milestone.date).toLocaleDateString()}
-                    </span>
+                  Estudiante
+                </th>
+                <th style={{ 
+                  padding: '12px', 
+                  textAlign: 'left', 
+                  borderBottom: '1px solid #dee2e6',
+                  fontWeight: 'bold',
+                  color: '#2c3e50'
+                }}>
+                  Curso
+                </th>
+                <th style={{ 
+                  padding: '12px', 
+                  textAlign: 'center', 
+                  borderBottom: '1px solid #dee2e6',
+                  fontWeight: 'bold',
+                  color: '#2c3e50'
+                }}>
+                  Completitud
+                </th>
+                <th style={{ 
+                  padding: '12px', 
+                  textAlign: 'center', 
+                  borderBottom: '1px solid #dee2e6',
+                  fontWeight: 'bold',
+                  color: '#2c3e50'
+                }}>
+                  Promedio
+                </th>
+                <th style={{ 
+                  padding: '12px', 
+                  textAlign: 'center', 
+                  borderBottom: '1px solid #dee2e6',
+                  fontWeight: 'bold',
+                  color: '#2c3e50'
+                }}>
+                  Estado
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {stats?.studentProgress?.map((student, index) => (
+                <tr key={index} style={{ 
+                  borderBottom: '1px solid #dee2e6'
+                }}>
+                  <td style={{ padding: '12px', color: '#2c3e50' }}>
+                    {student.name}
+                  </td>
+                  <td style={{ padding: '12px', color: '#6c757d' }}>
+                    {student.course}
+                  </td>
+                  <td style={{ padding: '12px', textAlign: 'center' }}>
                     <span style={{
-                      backgroundColor: '#007bff',
-                      color: 'white',
+                      padding: '4px 8px',
+                      borderRadius: '4px',
+                      backgroundColor: '#e9ecef',
+                      color: '#2c3e50',
+                      fontSize: '14px'
+                    }}>
+                      {student.completionRate}%
+                    </span>
+                  </td>
+                  <td style={{ padding: '12px', textAlign: 'center' }}>
+                    <span style={{
+                      padding: '4px 8px',
+                      borderRadius: '4px',
+                      backgroundColor: '#e9ecef',
+                      color: '#2c3e50',
+                      fontSize: '14px'
+                    }}>
+                      {student.averageGrade}
+                    </span>
+                  </td>
+                  <td style={{ padding: '12px', textAlign: 'center' }}>
+                    <span style={{
                       padding: '4px 8px',
                       borderRadius: '4px',
                       fontSize: '12px',
-                      fontWeight: 'bold'
+                      fontWeight: 'bold',
+                      backgroundColor: 
+                        student.status === 'excellent' ? '#d4edda' :
+                        student.status === 'on-track' ? '#d1ecf1' : '#f8d7da',
+                      color: 
+                        student.status === 'excellent' ? '#155724' :
+                        student.status === 'on-track' ? '#0c5460' : '#721c24'
                     }}>
-                      {milestone.courses_affected} cursos afectados
+                      {student.status === 'excellent' ? 'Excelente' :
+                       student.status === 'on-track' ? 'En Progreso' : 'En Riesgo'}
                     </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+                  </td>
+                </tr>
+              )) || []}
+            </tbody>
+          </table>
         </div>
-      )}
-
-      {/* Management Actions */}
-      <div style={{ marginBottom: '30px' }}>
-        <h2 style={{ color: '#2c3e50', marginBottom: '20px' }}>Acciones de Coordinación</h2>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-          gap: '15px'
-        }}>
-          <button style={{
-            backgroundColor: '#17a2b8',
-            color: 'white',
-            padding: '15px',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            fontSize: '14px',
-            fontWeight: 'bold'
-          }}>
-            📊 Exportar Reporte Global
-          </button>
-          <button style={{
-            backgroundColor: '#28a745',
-            color: 'white',
-            padding: '15px',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            fontSize: '14px',
-            fontWeight: 'bold'
-          }}>
-            👥 Gestionar Cohortes ({stats?.totalCohorts || 0})
-          </button>
-          <button style={{
-            backgroundColor: '#ffc107',
-            color: 'white',
-            padding: '15px',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            fontSize: '14px',
-            fontWeight: 'bold'
-          }}>
-            ⚠️ Intervenir Cohortes en Riesgo ({stats?.cohortsAtRisk || 0})
-          </button>
-          <button style={{
-            backgroundColor: '#007bff',
-            color: 'white',
-            padding: '15px',
-            border: 'none',
-            borderRadius: '8px',
-            cursor: 'pointer',
-            fontSize: '14px',
-            fontWeight: 'bold'
-          }}>
-            🎓 Supervisar Profesores ({stats?.totalTeachers || 0})
-          </button>
-        </div>
-      </div>
-
-      {/* Access Level Notice */}
-      <div style={{
-        marginTop: '30px',
-        padding: '15px',
-        backgroundColor: '#d1ecf1',
-        borderRadius: '8px',
-        border: '1px solid '#17a2b8''
-      }}>
-        <p style={{ margin: 0, fontSize: '14px', color: '#0c5460' }}>
-          📊 <strong>Acceso de Coordinación:</strong> Tienes acceso completo a todas las métricas
-          y reportes de las cohortes bajo tu coordinación. Puedes ver el progreso de todos los
-          estudiantes y profesores en tus programas asignados.
-        </p>
       </div>
     </div>
   )

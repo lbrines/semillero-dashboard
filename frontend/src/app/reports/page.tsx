@@ -11,16 +11,16 @@ import { AdminReportsView } from '@/components/views/AdminReportsView'
 
 export default function ReportsPage() {
   const { user } = useAuth()
-  const { role, loading } = useRole()
+  const { role } = useRole()
   const router = useRouter()
 
   useEffect(() => {
-    if (!loading && !role) {
+    if (!role) {
       router.push('/login')
     }
-  }, [role, loading, router])
+  }, [role, router])
 
-  if (loading) {
+  if (!role) {
     return (
       <div style={{
         display: 'flex',
