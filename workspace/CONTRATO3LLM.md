@@ -8,9 +8,9 @@ Eres un **Product/Tech Lead** que debe **cerrar el MVP en modo MOCK** con calida
 ---
 
 ## ALCANCE (lo que sí incluye)
-1) **Backend dual (MOCK + GOOGLE) completo**: fixtures realistas para *todas* las entidades, paginación y errores consistentes, OAuth 2.0 como WOW opcional. :contentReference[oaicite:2]{index=2}  
-2) **Frontend sólido**: estados **loading/empty/error**, filtros/búsqueda y KPIs calculadas desde MOCK y Google. :contentReference[oaicite:3]{index=3}  
-3) **DX/DevOps**: `.env.example` alineados, comandos "one-shot", README reproducible. :contentReference[oaicite:4]{index=4}:contentReference[oaicite:5]{index=5}
+1) **Backend dual (MOCK + GOOGLE) completo**: fixtures realistas para *todas* las entidades, paginación y errores consistentes, OAuth 2.0 como WOW opcional. Estructura separada en `/backend/`.
+2) **Frontend sólido**: estados **loading/empty/error**, filtros/búsqueda y KPIs calculadas desde MOCK y Google. Estructura separada en `/frontend/` con features.
+3) **DX/DevOps**: `.env.example` alineados, comandos "one-shot", README reproducible. Docker Compose orquesta ambos servicios.
 4) **Identificación de Profesores**: Sistema de autenticación dual (email local + Google OAuth) para profesores.
 5) **Sistema dual transparente**: Conmutación automática entre drivers MOCK y GOOGLE via `DEMO_MODE`.
 6) **Soporte multiidioma**: Default español, soporte para inglés, comentarios en código siempre en inglés.
@@ -144,11 +144,11 @@ Para cada tarea significativa, debe incluirse una breve nota que confirme:
   - Navegación por teclado en tabla, labels/aria básicos; toggle dark/light.
 
 ### C. DX / DevOps
-- **.env.example** (front/back) consistentes:
-  - Backend: `DATA_DRIVER=mock` (default), `DEMO_MODE=mock`, etc. :contentReference[oaicite:13]{index=13}
-  - Frontend: `NEXT_PUBLIC_API_URL=http://backend:8000`, `NEXT_PUBLIC_DEMO_MODE=mock`. :contentReference[oaicite:14]{index=14}
-- **Comandos “one-shot”**:
-  - `make up` → build + levanta red docker + backend(mock) + frontend.
+- **.env.example** (front/back) consistentes para estructura separada:
+  - Backend: `DATA_DRIVER=mock` (default), `DEMO_MODE=mock`, `FRONTEND_URL=http://localhost:3000`, etc.
+  - Frontend: `NEXT_PUBLIC_API_URL=http://backend:8000`, `NEXT_PUBLIC_DEMO_MODE=mock`, `BACKEND_URL=http://backend:8000`.
+- **Comandos "one-shot"** para estructura separada:
+  - `make up` → build + levanta red docker + backend(mock en `/backend/`) + frontend(en `/frontend/`).
   - `make test` → corre tests backend + tests humo frontend.
 - **README de Proyecto (único)**:
   - "Cómo correr la demo MOCK en 3 pasos", endpoints, rutas de UI, credenciales si aplica.

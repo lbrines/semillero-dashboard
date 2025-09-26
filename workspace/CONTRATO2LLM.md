@@ -7,7 +7,7 @@ Eres un **Frontend Engineer** especializado en **Next.js 14+** con **shadcn/ui**
 Crear frontend Next.js con 3 vistas (Overview, Students, Student Profile) consumiendo API FastAPI usando shadcn/ui + Tremor. Todo el ciclo de vida debe funcionar en Docker.
 
 ## OBJETIVO PRINCIPAL
-Implementar 3 vistas productizadas con shadcn/ui + Tremor consumiendo exclusivamente API FastAPI en Docker network.
+Implementar 3 vistas productizadas con shadcn/ui + Tremor consumiendo exclusivamente API FastAPI en Docker network usando estructura separada backend/frontend.
 
 ---
 
@@ -54,13 +54,14 @@ Para cada tarea significativa, debe incluirse una breve nota que confirme:
 
 ### PROMPT FASE 1: Setup Inicial Next.js Docker-First
 
-**TAREA**: Crear proyecto Next.js con Docker-First approach.
+**TAREA**: Crear proyecto Next.js con Docker-First approach para estructura separada frontend.
 
 **ENTREGABLES**:
 - `package.json` con dependencias
 - `Dockerfile` multi-stage (dev + prod)
-- `docker-compose.yml` para orquestación
-- `next.config.js` para Docker
+- `docker-compose.yml` para orquestación frontend (puerto 3000)
+- `next.config.js` para Docker y API backend
+- Estructura de carpetas `src/` con features
 
 **EJEMPLO package.json**:
 ```json
@@ -168,7 +169,7 @@ version: '3.8'
 services:
   frontend:
     build:
-      context: .
+      context: ./frontend
       dockerfile: Dockerfile
       target: dev
     ports:
@@ -188,7 +189,7 @@ services:
       - BACKEND_PORT=8000
       - DEV_PORT_RANGE=3000-3010
     volumes:
-      - .:/app
+      - ./frontend:/app
       - /app/node_modules
     networks:
       - classroom-network
@@ -378,14 +379,18 @@ Nerdearla Vibeathon - 2025"
 
 ### PROMPT FASE 2: Estructura de Carpetas
 
-**TAREA**: Crear estructura de carpetas Next.js con App Router.
+**TAREA**: Crear estructura de carpetas Next.js con App Router y organización por features.
 
 **ENTREGABLES**:
-- `/src/app/` (App Router con 3 páginas)
-- `/src/components/` (shadcn/ui + Tremor)
-- `/src/hooks/` (custom hooks para API)
-- `/src/lib/` (API client, utils, schemas Zod)
-- `/src/utils/` (helpers KPI, risk, dates)
+- Estructura `/src/` con features separados:
+  - `/src/services/` - GLOBAL (API clients)
+  - `/src/components/` - GLOBAL (Design system shadcn/ui + Tremor)
+  - `/src/hooks/` - GLOBAL (Shared hooks)
+  - `/src/utils/` - GLOBAL (Helpers KPI, risk, dates)
+  - `/src/auth/` - FEATURE (Authentication)
+  - `/src/classroom/` - FEATURE (Classroom data)
+  - `/src/reports/` - FEATURE (Reports)
+  - `/src/app/` - APP (Bootstrap con 3 páginas)
 - `/docs/` (documentación arquitectura)
 - `ARCHITECTURE.md` (módulos principales)
 - `TYPES.md` (tipos globales)

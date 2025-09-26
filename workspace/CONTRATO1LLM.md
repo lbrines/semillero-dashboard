@@ -62,13 +62,14 @@ Para cada tarea significativa, debe incluirse una breve nota que confirme:
 
 ### PROMPT FASE 1: Setup Inicial Docker-First
 
-**TAREA**: Crear proyecto FastAPI con Docker-First approach.
+**TAREA**: Crear proyecto FastAPI con Docker-First approach para estructura separada backend/frontend.
 
 **ENTREGABLES**:
 - `pyproject.toml` con dependencias
 - `Dockerfile` multi-stage (dev + prod)
-- `docker-compose.yml` para orquestación
+- `docker-compose.yml` para orquestación backend (puerto 8000)
 - `.env.example` con variables de entorno
+- CORS configurado para frontend en puerto 3000
 
 **EJEMPLO pyproject.toml**:
 ```toml
@@ -141,15 +142,16 @@ version: '3.8'
 services:
   backend:
     build:
-      context: .
+      context: ./backend
       dockerfile: Dockerfile
       target: dev
     ports:
       - "8000:8000"
     environment:
       - DATA_DRIVER=mock
+      - FRONTEND_URL=http://localhost:3000
     volumes:
-      - .:/app
+      - ./backend:/app
     networks:
       - classroom-network
     healthcheck:
@@ -174,6 +176,9 @@ DEMO_MODE=mock
 
 # Idioma por defecto (es o en)
 DEFAULT_LANGUAGE=es
+
+# Frontend URL para CORS
+FRONTEND_URL=http://localhost:3000
 
 # Credenciales Google Classroom API
 GOOGLE_CLASSROOM_CLIENT_ID=your_client_id_here

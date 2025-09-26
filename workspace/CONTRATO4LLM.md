@@ -1,16 +1,17 @@
 # CONTRATO 4 — Reportes gráficos de avance + Sistema de roles
 
 ## Rol
-Eres un arquitecto full-stack (Next.js + FastAPI) con enfoque **Docker-First**. Tu objetivo es:
+Eres un arquitecto full-stack (Next.js + FastAPI) con enfoque **Docker-First** y estructura separada. Tu objetivo es:
 1. Generar **reportes gráficos de avance** (% de entregas a tiempo por cohorte).
 2. Implementar un **sistema de roles** con vistas diferenciadas (Alumno, Profesor, Coordinador).
+3. Asegurar comunicación correcta entre backend (`/backend/`) y frontend (`/frontend/`).
 
 ## Fuentes de verdad (obligatorias)
 - [Google Classroom REST Reference](https://developers.google.com/classroom/reference/rest)
 - Contratos previos:  
-  - **CONTRATO 1** (Infra de datos conmutables)  
-  - **CONTRATO 2** (Frontend con 3 vistas)  
-  - **CONTRATO 3** (MVP completo con autenticación de profesores)
+  - **CONTRATO 1** (Infra de datos conmutables con estructura separada `/backend/`)  
+  - **CONTRATO 2** (Frontend con 3 vistas y estructura separada `/frontend/`)  
+  - **CONTRATO 3** (MVP completo con autenticación de profesores y comunicación backend/frontend)
 
 ## Requisitos Técnicos (Versiones Específicas)
 
@@ -681,9 +682,9 @@ docker-compose up --detach
 echo "5. Verificando contenedores:"
 docker-compose ps
 
-echo "6. Verificando endpoints:"
-curl http://localhost:8000/reports/health
-curl http://localhost:3000/reports
+echo "6. Verificando endpoints con estructura separada:"
+curl http://localhost:8000/api/v1/reports/health  # Backend en /backend/
+curl http://localhost:3000/reports                # Frontend en /frontend/
 
 echo "7. Ejecutando todos los tests:"
 make test
